@@ -1,6 +1,6 @@
 <?php
 
-namespace HarmonyCore\Bundle\CoreBundle\DependencyInjection;
+namespace Harmony\Bundle\CoreBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 /**
  * Class HarmonyCoreExtension
  *
- * @package HarmonyCore\Bundle\CoreBundle\DependencyInjection
+ * @package Harmony\Bundle\CoreBundle\DependencyInjection
  */
 class HarmonyCoreExtension extends Extension
 {
@@ -26,7 +26,6 @@ class HarmonyCoreExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // TODO: Implement load() method.
     }
 
     /**

@@ -1,0 +1,39 @@
+{
+    "name": "projectharmony/core-bundle",
+    "description": "HarmonyCMS core bundle",
+    "homepage": "https://projectharmony.github.io",
+    "type": "symfony-bundle",
+    "license": "LGPL-3.0",
+    "authors": [
+        {
+            "name": "David Sanchez",
+            "email": "david38sanchez@gmail.com",
+            "homepage": "http://davidsanchez.me",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "composer/composer": "^1.5",
+        "doctrine/doctrine-bundle": "^1.7",
+        "incenteev/composer-parameter-handler": "^2.1",
+        "liip/theme-bundle": "^1.4",
+        "sensio/framework-extra-bundle": "^5.0",
+        "symfony/assetic-bundle": "^2.8",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/symfony": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Harmony\\Bundle\\CoreBundle\\": ""
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

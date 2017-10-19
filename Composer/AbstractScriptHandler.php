@@ -1,6 +1,6 @@
 <?php
 
-namespace HarmonyCore\Bundle\CoreBundle\Composer;
+namespace Harmony\Bundle\CoreBundle\Composer;
 
 use Composer\Script\Event;
 use Symfony\Component\Process\Process;
@@ -9,7 +9,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 /**
  * Class AbstractScriptHandler
  *
- * @package HarmonyCore\Bundle\CoreBundle\Composer
+ * @package Harmony\Bundle\CoreBundle\Composer
  */
 abstract class AbstractScriptHandler
 {
