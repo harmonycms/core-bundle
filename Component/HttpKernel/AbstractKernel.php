@@ -45,6 +45,9 @@ abstract class AbstractKernel extends BaseKernel
             DoctrineBundle\DoctrineBundle\DoctrineBundle::class                 => ['all' => true],
             SensioBundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
 
+            // Symfony CMF Standard Edition Bundles
+            DoctrineBundle\PHPCRBundle\DoctrinePHPCRBundle::class               => ['all' => true],
+
             // Harmony bundles
             HarmonyCoreBundle::class                                            => ['all' => true]
         ];
@@ -101,7 +104,8 @@ abstract class AbstractKernel extends BaseKernel
     protected function getKernelParameters(): array
     {
         return array_merge(parent::getKernelParameters(), [
-            'kernel.app_name' => $this->appName, 'kernel.app_version' => $this->appVersion
+            'kernel.app_name'    => $this->appName,
+            'kernel.app_version' => $this->appVersion
         ]);
     }
 }
