@@ -1,5 +1,5 @@
 {
-    "name": "projectharmony/core-bundle",
+    "name": "harmony/core-bundle",
     "description": "HarmonyCMS core bundle",
     "homepage": "https://projectharmony.github.io",
     "type": "symfony-bundle",
@@ -20,6 +20,7 @@
         "liip/theme-bundle": "^1.4",
         "sensio/framework-extra-bundle": "^5.0",
         "symfony/assetic-bundle": "^2.8",
+        "symfony/flex": "^1.0",
         "symfony/monolog-bundle": "^3.1",
         "symfony/symfony": "^3.3"
     },
