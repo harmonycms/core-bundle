@@ -49,8 +49,8 @@ abstract class AbstractKernel extends BaseKernel
             DoctrineBundle\PHPCRBundle\DoctrinePHPCRBundle::class               => ['all' => true],
 
             // Development Bundles
-            SymfonyBundle\DebugBundle\DebugBundle::class             => ['dev', 'test' => true],
-            SymfonyBundle\WebProfilerBundle\WebProfilerBundle::class => ['dev', 'test' => true],
+            SymfonyBundle\DebugBundle\DebugBundle::class                        => ['dev' => true, 'test' => true],
+            SymfonyBundle\WebProfilerBundle\WebProfilerBundle::class            => ['dev' => true, 'test' => true],
 
             // Harmony bundles
             HarmonyCoreBundle::class                                            => ['all' => true]
