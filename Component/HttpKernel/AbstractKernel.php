@@ -37,16 +37,16 @@ abstract class AbstractKernel extends BaseKernel
     {
         return [
             // Symfony Standard Edition Bundles
-            new SymfonyBundle\FrameworkBundle\FrameworkBundle(),
-            new SymfonyBundle\AsseticBundle\AsseticBundle(),
-            new SymfonyBundle\SecurityBundle\SecurityBundle(),
-            new SymfonyBundle\TwigBundle\TwigBundle(),
-            new SymfonyBundle\MonologBundle\MonologBundle(),
-            new DoctrineBundle\DoctrineBundle\DoctrineBundle(),
-            new SensioBundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            SymfonyBundle\FrameworkBundle\FrameworkBundle::class                => ['all' => true],
+            SymfonyBundle\AsseticBundle\AsseticBundle::class                    => ['all' => true],
+            SymfonyBundle\SecurityBundle\SecurityBundle::class                  => ['all' => true],
+            SymfonyBundle\TwigBundle\TwigBundle::class                          => ['all' => true],
+            SymfonyBundle\MonologBundle\MonologBundle::class                    => ['all' => true],
+            DoctrineBundle\DoctrineBundle\DoctrineBundle::class                 => ['all' => true],
+            SensioBundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
 
             // Harmony bundles
-            new HarmonyCoreBundle()
+            HarmonyCoreBundle::class                                            => ['all' => true]
         ];
     }
 
@@ -88,8 +88,8 @@ abstract class AbstractKernel extends BaseKernel
     protected function registerDevBundles(): array
     {
         return [
-            new SymfonyBundle\DebugBundle\DebugBundle(),
-            new SymfonyBundle\WebProfilerBundle\WebProfilerBundle()
+            SymfonyBundle\DebugBundle\DebugBundle::class             => ['all' => true],
+            SymfonyBundle\WebProfilerBundle\WebProfilerBundle::class => ['all' => true]
         ];
     }
 
@@ -101,8 +101,7 @@ abstract class AbstractKernel extends BaseKernel
     protected function getKernelParameters(): array
     {
         return array_merge(parent::getKernelParameters(), [
-            'kernel.app_name'    => $this->appName,
-            'kernel.app_version' => $this->appVersion
+            'kernel.app_name' => $this->appName, 'kernel.app_version' => $this->appVersion
         ]);
     }
 }
