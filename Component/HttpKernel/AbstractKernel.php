@@ -48,6 +48,10 @@ abstract class AbstractKernel extends BaseKernel
             // Symfony CMF Standard Edition Bundles
             DoctrineBundle\PHPCRBundle\DoctrinePHPCRBundle::class               => ['all' => true],
 
+            // Development Bundles
+            SymfonyBundle\DebugBundle\DebugBundle::class             => ['dev', 'test' => true],
+            SymfonyBundle\WebProfilerBundle\WebProfilerBundle::class => ['dev', 'test' => true],
+
             // Harmony bundles
             HarmonyCoreBundle::class                                            => ['all' => true]
         ];
@@ -81,19 +85,6 @@ abstract class AbstractKernel extends BaseKernel
     public function getName(): string
     {
         return $this->name = self::KERNEL_NAME;
-    }
-
-    /**
-     * Returns an array of dev bundles to register.
-     *
-     * @return array
-     */
-    protected function registerDevBundles(): array
-    {
-        return [
-            SymfonyBundle\DebugBundle\DebugBundle::class             => ['all' => true],
-            SymfonyBundle\WebProfilerBundle\WebProfilerBundle::class => ['all' => true]
-        ];
     }
 
     /**
