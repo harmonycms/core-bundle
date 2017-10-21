@@ -3,6 +3,7 @@
 namespace Harmony\Bundle\CoreBundle\Composer;
 
 use Composer\Script\Event;
+use Harmony\Bundle\CoreBundle\HarmonyCoreBundle;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\PhpExecutableFinder;
 
@@ -21,8 +22,8 @@ abstract class AbstractScriptHandler
      */
     protected static $options
         = [
-            'symfony-app-dir'        => 'app',
-            'symfony-web-dir'        => 'web',
+            'symfony-app-dir'        => HarmonyCoreBundle::SYMFONY_APP_DIR,
+            'symfony-web-dir'        => HarmonyCoreBundle::SYMFONY_WEB_DIR,
             'symfony-assets-install' => 'hard',
             'symfony-cache-warmup'   => false
         ];

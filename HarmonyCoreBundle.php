@@ -14,6 +14,10 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 class HarmonyCoreBundle extends Bundle
 {
 
+    /** Constants */
+    const SYMFONY_APP_DIR = 'app';
+    const SYMFONY_WEB_DIR = 'web';
+
     /**
      * Returns the bundle's container extension.
      *
