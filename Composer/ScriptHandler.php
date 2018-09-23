@@ -4,7 +4,6 @@ namespace Harmony\Bundle\CoreBundle\Composer;
 
 use Composer\Script\Event;
 use Incenteev\ParameterHandler\ScriptHandler as ParameterHandlerScriptHandler;
-use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler as DistributionBundleScriptHandler;
 
 /**
  * Class ScriptHandler
@@ -24,9 +23,5 @@ class ScriptHandler extends AbstractScriptHandler
     public static function handleCommandScripts(Event $event)
     {
         ParameterHandlerScriptHandler::buildParameters($event);
-        DistributionBundleScriptHandler::buildBootstrap($event);
-        DistributionBundleScriptHandler::clearCache($event);
-        DistributionBundleScriptHandler::installRequirementsFile($event);
-        DistributionBundleScriptHandler::prepareDeploymentTarget($event);
     }
 }

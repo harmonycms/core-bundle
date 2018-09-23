@@ -38,8 +38,6 @@ abstract class AbstractKernel extends BaseKernel
         return [
             // Symfony Standard Edition Bundles
             SymfonyBundle\FrameworkBundle\FrameworkBundle::class                => ['all' => true],
-            SymfonyBundle\AsseticBundle\AsseticBundle::class                    => ['all' => true],
-            SymfonyBundle\SecurityBundle\SecurityBundle::class                  => ['all' => true],
             SymfonyBundle\TwigBundle\TwigBundle::class                          => ['all' => true],
             SymfonyBundle\MonologBundle\MonologBundle::class                    => ['all' => true],
             DoctrineBundle\DoctrineBundle\DoctrineBundle::class                 => ['all' => true],
