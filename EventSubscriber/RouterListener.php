@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\EventListener\RouterListener as SymfonyRouterListener;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
 
 /**
@@ -23,12 +25,12 @@ class RouterListener extends SymfonyRouterListener
     /**
      * RouterListener constructor.
      *
-     * @param                      $matcher
-     * @param RequestStack         $requestStack
-     * @param null|RequestContext  $context
-     * @param null|LoggerInterface $logger
-     * @param string|null          $projectDir
-     * @param bool                 $debug
+     * @param UrlMatcherInterface|RequestMatcherInterface $matcher
+     * @param RequestStack                                $requestStack
+     * @param null|RequestContext                         $context
+     * @param null|LoggerInterface                        $logger
+     * @param string|null                                 $projectDir
+     * @param bool                                        $debug
      */
     public function __construct($matcher, RequestStack $requestStack, ?RequestContext $context = null,
                                 ?LoggerInterface $logger = null, string $projectDir = null, bool $debug = true)
