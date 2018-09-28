@@ -1,52 +1,75 @@
 {
-    "name": "harmony/core-bundle",
-    "description": "HarmonyCMS core bundle",
-    "homepage": "https://projectharmony.github.io",
-    "type": "symfony-bundle",
-    "license": "LGPL-3.0",
-    "authors": [
-        {
-            "name": "David Sanchez",
-            "email": "david38sanchez@gmail.com",
-            "homepage": "http://davidsanchez.me",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": ">=7.1.3",
-        "composer/composer": "^1.5",
-        "doctrine/doctrine-bundle": "^1.9",
-        "incenteev/composer-parameter-handler": "^2.1",
-        "jackalope/jackalope-doctrine-dbal": "^1.3",
-        "sensio/framework-extra-bundle": "^5.2",
-        "symfony-cmf/symfony-cmf": "^2.1",
-        "symfony/flex": "^1.1",
-        "symfony/framework-bundle": "^4.1",
-        "symfony/monolog-bundle": "^3.3",
-        "symfony/swiftmailer-bundle": "^3.2",
-        "symfony/webpack-encore-pack": "^1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Harmony\\Bundle\\CoreBundle\\": ""
-        }
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        },
-        "symfony": {
-            "require": "~4.1."
-        }
-    },
-    "scripts": {
-        "auto-scripts": {
-            "security-checker security:check": "script",
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        }
+  "name": "harmony/core-bundle",
+  "description": "HarmonyCMS core bundle",
+  "homepage": "https://projectharmony.github.io",
+  "type": "symfony-bundle",
+  "license": "LGPL-3.0",
+  "authors": [
+    {
+      "name": "David Sanchez",
+      "email": "david38sanchez@gmail.com",
+      "homepage": "http://davidsanchez.me",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "php": ">=7.1.3",
+    "sensio/framework-extra-bundle": "^5.1",
+    "symfony/asset": "*",
+    "symfony/console": "*",
+    "symfony/expression-language": "*",
+    "symfony/flex": "^1.1",
+    "symfony/form": "*",
+    "symfony/framework-bundle": "*",
+    "symfony/monolog-bundle": "^3.1",
+    "symfony/orm-pack": "*",
+    "symfony/process": "*",
+    "symfony/security-bundle": "*",
+    "symfony/serializer-pack": "*",
+    "symfony/swiftmailer-bundle": "^3.1",
+    "symfony/twig-bundle": "*",
+    "symfony/validator": "*",
+    "symfony/web-link": "*",
+    "symfony/yaml": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Harmony\\Bundle\\CoreBundle\\": ""
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    },
+    "symfony": {
+      "allow-contrib": false,
+      "require": "~4.1."
+    }
+  },
+  "replace": {
+    "paragonie/random_compat": "2.*",
+    "symfony/polyfill-ctype": "*",
+    "symfony/polyfill-iconv": "*",
+    "symfony/polyfill-php71": "*",
+    "symfony/polyfill-php70": "*",
+    "symfony/polyfill-php56": "*"
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ]
+  }
 }
