@@ -1,0 +1,5 @@
+services:
+  Harmony\Bundle\CoreBundle\EventSubscriber\RouterListener:
+    arguments: ['@?', '@request_stack', '@router.request_context', '@monolog.logger_prototype', '@?', '@?']
+    tags:
+      -  { name: kernel.event_subscriber }
