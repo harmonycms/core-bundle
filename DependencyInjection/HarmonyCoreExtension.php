@@ -29,7 +29,22 @@ class HarmonyCoreExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration(new Configuration(), $configs);
+        foreach ($config as $key => $value) {
+            $container->setParameter(HarmonyCoreExtension::ALIAS . '.' . $key, $value);
+        }
+
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yaml');
+    }
+
+    /**
+     * Return HarmonyCMS alias name.
+     *
+     * @return string
+     */
+    public function getAlias(): string
+    {
+        return self::ALIAS;
     }
 }
