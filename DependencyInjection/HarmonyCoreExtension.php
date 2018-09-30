@@ -32,14 +32,4 @@ class HarmonyCoreExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yaml');
     }
-
-    /**
-     * Return HarmonyCMS alias name.
-     *
-     * @return string
-     */
-    public function getAlias(): string
-    {
-        return self::ALIAS;
-    }
 }
