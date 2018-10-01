@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->setRoot(HarmonyCoreExtension::ALIAS);
+        $rootNode    = $treeBuilder->root(HarmonyCoreExtension::ALIAS);
 
         $rootNode
             ->children()
@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
                     ->info('The name displayed as the title of the site (e.g. company name, project name).')
                 ->end()
             ->end()
+            ->ignoreExtraKeys(true)
         ;
 
         return $treeBuilder;
