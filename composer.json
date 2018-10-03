@@ -3,7 +3,7 @@
   "description": "HarmonyCMS core bundle",
   "homepage": "https://projectharmony.github.io",
   "type": "symfony-bundle",
-  "license": "LGPL-3.0",
+  "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "David Sanchez",
