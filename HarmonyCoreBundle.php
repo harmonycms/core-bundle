@@ -2,7 +2,9 @@
 
 namespace Harmony\Bundle\CoreBundle;
 
+use Harmony\Bundle\CoreBundle\DependencyInjection\Compiler\FosUserPass;
 use Harmony\Bundle\CoreBundle\DependencyInjection\HarmonyCoreExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
@@ -29,5 +31,18 @@ class HarmonyCoreBundle extends Bundle
     public function getContainerExtension(): ExtensionInterface
     {
         return new HarmonyCoreExtension();
+    }
+
+    /**
+     * Builds the bundle.
+     * It is only ever called once when the cache is empty.
+     * This method can be overridden to register compilation passes,
+     * other extensions, ...
+     *
+     * @param ContainerBuilder $container
+     */
+    public function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new FosUserPass());
     }
 }
