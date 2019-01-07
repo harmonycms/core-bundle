@@ -30,9 +30,7 @@ class HarmonyCoreExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
-        foreach ($config as $key => $value) {
-            $container->setParameter(HarmonyCoreExtension::ALIAS . '.' . $key, $value);
-        }
+        $container->setParameter(HarmonyCoreExtension::ALIAS, $config);
 
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yaml');
