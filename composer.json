@@ -17,6 +17,7 @@
     "doctrine/doctrine-bundle": "^1.9",
     "doctrine/persistence": "^1.0",
     "friendsofsymfony/user-bundle": "^2.1",
+    "harmony/theme-bundle": "dev-master",
     "rollerworks/route-autowiring-bundle": "^1.1"
   },
   "autoload": {
