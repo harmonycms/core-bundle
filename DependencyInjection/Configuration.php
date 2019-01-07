@@ -20,10 +20,11 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root(HarmonyCoreExtension::ALIAS);
+        $treeBuilder = new TreeBuilder(HarmonyCoreExtension::ALIAS);
+        $rootNode    = $treeBuilder->getRoot();
 
         $rootNode
+            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('site_name')
                     ->isRequired()
