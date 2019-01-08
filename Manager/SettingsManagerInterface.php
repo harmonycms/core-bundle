@@ -2,7 +2,7 @@
 
 namespace Harmony\Bundle\CoreBundle\Manager;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use FOS\UserBundle\Model\UserInterface;
 
 /**
  * Interface SettingsManagerInterface
