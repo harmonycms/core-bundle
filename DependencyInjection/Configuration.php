@@ -3,7 +3,10 @@
 namespace Harmony\Bundle\CoreBundle\DependencyInjection;
 
 use Harmony\Bundle\CoreBundle\Component\Config\Definition\Builder\TreeBuilder;
+use Harmony\Bundle\CoreBundle\Manager\SettingsManagerInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class Configuration
@@ -23,12 +26,52 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder(HarmonyCoreExtension::ALIAS);
         $rootNode    = $treeBuilder->getRoot();
 
+        $scopes = [
+            SettingsManagerInterface::SCOPE_ALL,
+            SettingsManagerInterface::SCOPE_GLOBAL,
+            SettingsManagerInterface::SCOPE_USER,
+        ];
+
         $rootNode
-            ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('site_name')
-                    ->isRequired()
-                    ->info('The name displayed as the title of the site (e.g. company name, project name).')
+                ->arrayNode('settings')
+                    ->prototype('array')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('scope')
+                                ->defaultValue('all')
+                                ->validate()
+                                    ->ifNotInArray($scopes)
+                                    ->thenInvalid('Invalid scope %s. Valid scopes are: '.implode(', ', array_map(function ($s) { return '"'.$s.'"'; }, $scopes)).'.')
+                                ->end()
+                            ->end()
+                            ->scalarNode('type')->defaultValue(TextType::class)->end()
+                            ->variableNode('options')
+                                ->info('The options given to the form builder')
+                                ->defaultValue(array())
+                                ->validate()
+                                    ->always(function ($v) {
+                                        if (!is_array($v)) {
+                                            throw new InvalidTypeException();
+                                        }
+                                        return $v;
+                                    })
+                                ->end()
+                            ->end()
+                            ->variableNode('constraints')
+                                ->info('The constraints on this option. Example, use constraits found in Symfony\Component\Validator\Constraints')
+                                ->defaultValue(array())
+                                ->validate()
+                                    ->always(function ($v) {
+                                        if (!is_array($v)) {
+                                            throw new InvalidTypeException();
+                                        }
+                                        return $v;
+                                    })
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
             ->ignoreExtraKeys(true)
