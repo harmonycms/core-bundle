@@ -46,6 +46,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->scalarNode('type')->defaultValue(TextType::class)->end()
+                            ->scalarNode('value')->defaultNull()->end()
                             ->variableNode('options')
                                 ->info('The options given to the form builder')
                                 ->defaultValue(array())
