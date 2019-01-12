@@ -1,0 +1,5 @@
+helis_settings_manager:
+  settings:
+    - name: site_name
+      type: string
+      data: 'HarmonyDemo'

@@ -1,0 +1,9 @@
+doctrine:
+  orm:
+    mappings:
+      HelisSettingsManagerBundle:
+        type: yml
+        is_bundle: true
+        dir: "Resources/config/doctrine"
+        alias: HelisSettingsManagerBundle
+        prefix: Helis\SettingsManagerBundle
