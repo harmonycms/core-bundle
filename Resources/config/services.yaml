@@ -3,3 +3,10 @@ services:
     arguments: ['@router', '@request_stack', '@router.request_context', '@logger', '%kernel.project_dir%', '%kernel.debug%']
     tags:
       -  { name: kernel.event_subscriber }
+
+  Helis\SettingsManagerBundle\Provider\DoctrineOrmSettingsProvider:
+    arguments:
+      $entityManager: '@doctrine.orm.default_entity_manager'
+      $settingsEntityClass: 'Harmony\Bundle\CoreBundle\Entity\Settings'
+    tags:
+      - { name: settings_manager.provider, provider: orm, priority: 20 }
