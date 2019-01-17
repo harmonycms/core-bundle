@@ -12,12 +12,6 @@
       "role": "Developer"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/emulienfou/settings-manager-bundle"
-    }
-  ],
   "require": {
     "php": ">=7.1.3",
     "acelaya/doctrine-enum-type": "^2.2",
