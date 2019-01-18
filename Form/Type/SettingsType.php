@@ -4,7 +4,6 @@ namespace Harmony\Bundle\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,8 +27,7 @@ class SettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('settings', CollectionType::class, ['entry_type' => SettingFormType::class])
-            ->add('submit', SubmitType::class);
+        $builder->add('settings', CollectionType::class, ['entry_type' => SettingFormType::class]);
     }
 
     /**
