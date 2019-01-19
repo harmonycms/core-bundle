@@ -2,4 +2,11 @@ helis_settings_manager:
   settings:
     - name: site_name
       type: string
-      data: 'HarmonyDemo'
+      data: 'HarmonyCMS'
+      description: 'The website name as it should appear on the front-end'
+      tags: ['general']
+
+    - name: tag_line
+      type: string
+      description: 'In a few words, explain what this site is about.'
+      tags: ['general']
