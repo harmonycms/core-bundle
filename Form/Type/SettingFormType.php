@@ -2,15 +2,9 @@
 
 namespace Harmony\Bundle\CoreBundle\Form\Type;
 
-use Helis\SettingsManagerBundle\Form\Type\YamlType;
 use Helis\SettingsManagerBundle\Model\SettingModel;
 use Helis\SettingsManagerBundle\Model\Type;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -41,50 +35,33 @@ class SettingFormType extends AbstractType
             if (null === $model = $event->getData()) {
                 return;
             }
-            if ($model->getType()->equals(Type::BOOL())) {
-                $event->getForm()->add('data', CheckboxType::class, [
-                    'translation_domain' => 'HelisSettingsManager',
-                    'label'              => false,
-                    'required'           => false,
-                    'help'               => $model->getDescription()
-                ]);
-            } elseif ($model->getType()->equals(Type::INT())) {
-                $event->getForm()->add('data', IntegerType::class, [
-                    'translation_domain' => 'HelisSettingsManager',
-                    'label'              => false,
-                    'scale'              => 0,
-                    'help'               => $model->getDescription()
-                ]);
-            } elseif ($model->getType()->equals(Type::FLOAT())) {
-                $event->getForm()->add('data', NumberType::class, [
-                    'translation_domain' => 'HelisSettingsManager',
-                    'label'              => false,
-                    'scale'              => 2,
-                    'help'               => $model->getDescription()
-                ]);
-            } elseif ($model->getType()->equals(Type::YAML())) {
-                $event->getForm()->add('data', YamlType::class, [
-                    'translation_domain' => 'HelisSettingsManager',
-                    'label'              => false,
-                    'attr'               => ['rows' => 12],
-                    'help'               => $model->getDescription()
-                ]);
-            } elseif ($model->getType()->equals(Type::CHOICE())) {
-                $event->getForm()->add('data', ChoiceType::class, [
-                    'translation_domain' => 'HelisSettingsManager',
-                    'label'              => false,
-                    'placeholder'        => 'edit.form.choice_placeholder',
-                    'choices'            => $model->getChoices(),
-                    'help'               => $model->getDescription()
-                ]);
+
+            $options = [
+                'translation_domain' => 'HelisSettingsManager',
+                'label'              => false,
+                'help'               => $model->getDescription()
+            ];
+            if ($model->getType()->equals(Type::BOOL()) || $model->getType()->getValue() === 'bool') {
+                $options += ['required' => false];
+            } elseif ($model->getType()->equals(Type::INT()) || $model->getType()->getValue() === 'int') {
+                $options += ['scale' => 0];
+            } elseif ($model->getType()->equals(Type::FLOAT()) || $model->getType()->getValue() === 'float') {
+                $options += ['scale' => 2];
+            } elseif ($model->getType()->equals(Type::YAML()) || $model->getType()->getValue() === 'yaml') {
+                $options += ['attr' => ['rows' => 12]];
+            } elseif ($model->getType()->equals(Type::CHOICE()) || $model->getType()->getValue() === 'choice') {
+                $options += [
+                    'placeholder' => 'edit.form.choice_placeholder',
+                    'choices'     => array_values($model->getChoices()) === $model->getChoices() ?
+                        array_combine($model->getChoices(), $model->getChoices()) : $model->getChoices()
+                ];
             } else {
-                $event->getForm()->add('data', TextType::class, [
-                    'translation_domain' => 'HelisSettingsManager',
-                    'label'              => false,
-                    'required'           => false,
-                    'help'               => $model->getDescription()
-                ]);
+                $options += ['required' => false];
             }
+
+            $event->getForm()
+                ->add('data', Type::getTypeName($model->getType()->getValue()),
+                    array_merge($options, $model->getTypeOptions()));
         });
     }
 
