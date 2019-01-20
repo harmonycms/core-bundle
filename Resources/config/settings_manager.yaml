@@ -5,8 +5,29 @@ helis_settings_manager:
       data: 'HarmonyCMS'
       description: 'The website name as it should appear on the front-end'
       tags: ['general']
-
     - name: tag_line
       type: string
       description: 'In a few words, explain what this site is about.'
       tags: ['general']
+
+    - name: meta_title
+      type: string
+      tags: ['seo']
+    - name: meta_description
+      type: string
+      tags: ['seo']
+    - name: meta_keywords
+      type: string
+      tags: ['seo']
+    - name: meta_robots_index
+      type: choice
+      type_options: { expanded: true, multiple: false }
+      choices: { 'Index': index, 'NoIndex': noindex }
+      data: index
+      tags: ['seo']
+    - name: meta_robots_follow
+      type: choice
+      type_options: { expanded: true, multiple: false }
+      choices: ['follow', 'nofollow']
+      data: 'follow'
+      tags: ['seo']
