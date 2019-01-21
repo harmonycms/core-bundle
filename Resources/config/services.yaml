@@ -7,6 +7,7 @@ services:
   Helis\SettingsManagerBundle\Provider\DoctrineOrmSettingsProvider:
     arguments:
       $entityManager: '@doctrine.orm.default_entity_manager'
-      $settingsEntityClass: 'Harmony\Bundle\CoreBundle\Entity\Settings'
+      $settingsEntityClass: 'Harmony\Bundle\CoreBundle\Entity\Setting'
+      $tagEntityClass: 'Harmony\Bundle\CoreBundle\Entity\SettingTag'
     tags:
       - { name: settings_manager.provider, provider: orm, priority: 20 }

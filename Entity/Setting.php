@@ -2,6 +2,7 @@
 
 namespace Harmony\Bundle\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Helis\SettingsManagerBundle\Model\SettingModel;
 
@@ -12,7 +13,7 @@ use Helis\SettingsManagerBundle\Model\SettingModel;
  *
  * @package Harmony\Bundle\CoreBundle\Entity
  */
-class Settings extends SettingModel
+class Setting extends SettingModel
 {
 
     /**
@@ -22,6 +23,12 @@ class Settings extends SettingModel
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var ArrayCollection|SettingTag[]
+     * @ORM\ManyToMany(targetEntity="Harmony\Bundle\CoreBundle\Entity\SettingTag", cascade={"persist"}, fetch="EAGER")
+     */
+    protected $tags;
 
     /**
      * @return int
@@ -34,9 +41,9 @@ class Settings extends SettingModel
     /**
      * @param int $id
      *
-     * @return Settings
+     * @return Setting
      */
-    public function setId(int $id): Settings
+    public function setId(int $id): Setting
     {
         $this->id = $id;
 
