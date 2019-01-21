@@ -49,6 +49,6 @@ class SettingsType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'harmony_admin';
+        return 'harmony_admin_settings';
     }
 }
