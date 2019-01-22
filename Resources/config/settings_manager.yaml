@@ -22,12 +22,12 @@ helis_settings_manager:
     - name: meta_robots_index
       type: choice
       type_options: { expanded: true, multiple: false }
-      choices: { 'Index': index, 'NoIndex': noindex }
+      choices: { Index: index, NoIndex: noindex }
       data: index
       tags: ['seo']
     - name: meta_robots_follow
       type: choice
       type_options: { expanded: true, multiple: false }
-      choices: ['follow', 'nofollow']
+      choices: { Follow: follow, NoFollow: nofollow }
       data: 'follow'
       tags: ['seo']
