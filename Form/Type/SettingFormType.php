@@ -72,9 +72,6 @@ class SettingFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => SettingModel::class,
-            'method'     => 'POST'
-        ]);
+        $resolver->setDefaults(['data_class' => SettingModel::class]);
     }
 }

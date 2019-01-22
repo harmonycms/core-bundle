@@ -37,7 +37,7 @@ class SettingsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['method' => 'POST']);
+        $resolver->setDefaults(['method' => 'POST', 'validation_groups' => 'CoreSettingValidation']);
     }
 
     /**
