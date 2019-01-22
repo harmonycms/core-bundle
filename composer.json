@@ -31,9 +31,6 @@
     "sort-packages": true
   },
   "extra": {
-    "branch-alias": {
-      "dev-master": "1.0-dev"
-    },
     "symfony": {
       "id": "01CS5JQYCB631XWZJ8PTVNG8AR"
     }
