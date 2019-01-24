@@ -12,9 +12,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Exception\NoConfigurationException;
-use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
-use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class RouterListener
@@ -33,14 +32,14 @@ class RouterListener extends SymfonyRouterListener
     /**
      * RouterListener constructor.
      *
-     * @param UrlMatcherInterface|RequestMatcherInterface $matcher
-     * @param RequestStack                                $requestStack
-     * @param null|RequestContext                         $context
-     * @param null|LoggerInterface                        $logger
-     * @param string|null                                 $projectDir
-     * @param bool                                        $debug
+     * @param RouterInterface      $matcher
+     * @param RequestStack         $requestStack
+     * @param null|RequestContext  $context
+     * @param null|LoggerInterface $logger
+     * @param string|null          $projectDir
+     * @param bool                 $debug
      */
-    public function __construct($matcher, RequestStack $requestStack, ?RequestContext $context = null,
+    public function __construct(RouterInterface $matcher, RequestStack $requestStack, ?RequestContext $context = null,
                                 ?LoggerInterface $logger = null, string $projectDir = null, bool $debug = true)
     {
         parent::__construct($matcher, $requestStack, $context, $logger, $projectDir, $debug);
