@@ -11,6 +11,8 @@ services:
 
   Harmony\Bundle\CoreBundle\EventSubscriber\RouterListener: ~
 
-  Helis\SettingsManagerBundle\Provider\DoctrineOrmSettingsProvider: ~
+  Helis\SettingsManagerBundle\Provider\DoctrineOrmSettingsProvider:
+    tags:
+      - { name: settings_manager.provider, provider: orm, priority: 20 }
 
   Harmony\Bundle\CoreBundle\Manager\SettingsManager: ~
