@@ -7,7 +7,6 @@ services:
       $entityManager: '@doctrine.orm.default_entity_manager'
       $settingsEntityClass: 'Harmony\Bundle\CoreBundle\Entity\Setting'
       $tagEntityClass: 'Harmony\Bundle\CoreBundle\Entity\SettingTag'
-      $providers: { config: '@settings_manager.provider.config' }
 
   Harmony\Bundle\CoreBundle\EventSubscriber\RouterListener: ~
 

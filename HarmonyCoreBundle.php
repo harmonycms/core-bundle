@@ -3,6 +3,7 @@
 namespace Harmony\Bundle\CoreBundle;
 
 use Harmony\Bundle\CoreBundle\DependencyInjection\Compiler\FosUserPass;
+use Harmony\Bundle\CoreBundle\DependencyInjection\Compiler\SettingsProviderPass;
 use Harmony\Bundle\CoreBundle\DependencyInjection\HarmonyCoreExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -43,6 +44,6 @@ class HarmonyCoreBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new FosUserPass());
+        $container->addCompilerPass(new FosUserPass())->addCompilerPass(new SettingsProviderPass());
     }
 }
