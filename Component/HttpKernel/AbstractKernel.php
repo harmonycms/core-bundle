@@ -2,11 +2,6 @@
 
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
-use Doctrine\Bundle as DoctrineBundle;
-use Harmony\Bundle\CoreBundle\HarmonyCoreBundle;
-use Sensio\Bundle as SensioBundle;
-use Symfony\Bundle as SymfonyBundle;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 /**
@@ -20,40 +15,13 @@ abstract class AbstractKernel extends BaseKernel
     /** Constants */
     const KERNEL_NAME = 'harmony';
     const APP_NAME    = 'Harmony';
-    const APP_VERSION = '0.1';
+    const APP_VERSION = '1.0';
 
     /** @var string */
     protected $appName = self::APP_NAME;
 
     /** @var string */
     protected $appVersion = self::APP_VERSION;
-
-    /**
-     * Returns an array of bundles to register.
-     *
-     * @return BundleInterface[] An array of bundle instances.
-     */
-    public function registerBundles(): array
-    {
-        return [
-            // Symfony Standard Edition Bundles
-            SymfonyBundle\FrameworkBundle\FrameworkBundle::class                => ['all' => true],
-            SymfonyBundle\TwigBundle\TwigBundle::class                          => ['all' => true],
-            SymfonyBundle\MonologBundle\MonologBundle::class                    => ['all' => true],
-            DoctrineBundle\DoctrineBundle\DoctrineBundle::class                 => ['all' => true],
-            SensioBundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
-
-            // Symfony CMF Standard Edition Bundles
-            DoctrineBundle\PHPCRBundle\DoctrinePHPCRBundle::class               => ['all' => true],
-
-            // Development Bundles
-            SymfonyBundle\DebugBundle\DebugBundle::class                        => ['dev' => true, 'test' => true],
-            SymfonyBundle\WebProfilerBundle\WebProfilerBundle::class            => ['dev' => true, 'test' => true],
-
-            // Harmony bundles
-            HarmonyCoreBundle::class                                            => ['all' => true]
-        ];
-    }
 
     /**
      * Gets the application name of the kernel.
@@ -76,13 +44,13 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
-     * Gets the name of the kernel.
+     * Get the themes directory.
      *
-     * @return string The kernel name
+     * @return string
      */
-    public function getName(): string
+    public function getThemeDir(): string
     {
-        return $this->name = self::KERNEL_NAME;
+        return $this->getProjectDir() . '/themes';
     }
 
     /**
@@ -94,7 +62,8 @@ abstract class AbstractKernel extends BaseKernel
     {
         return array_merge(parent::getKernelParameters(), [
             'kernel.app_name'    => $this->appName,
-            'kernel.app_version' => $this->appVersion
+            'kernel.app_version' => $this->appVersion,
+            'kernel.theme_dir'   => $this->getThemeDir()
         ]);
     }
 }
