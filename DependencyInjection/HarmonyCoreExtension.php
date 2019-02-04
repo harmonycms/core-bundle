@@ -2,11 +2,14 @@
 
 namespace Harmony\Bundle\CoreBundle\DependencyInjection;
 
+use Harmony\Bundle\CoreBundle\Provider\ConfigurationMenuProvider;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class HarmonyCoreExtension
@@ -30,8 +33,34 @@ class HarmonyCoreExtension extends Extension implements PrependExtensionInterfac
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuredMenus = [];
+        if (is_file($file = $container->getParameter('kernel.root_dir') . '/config/menu.yaml')) {
+            $configuredMenus = Yaml::parse(file_get_contents(realpath($file)));
+            $container->addResource(new FileResource($file));
+        }
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            if (is_file($file = dirname($reflection->getFileName()) . '/Resources/config/menu.yaml')) {
+                $configuredMenus = array_replace_recursive($configuredMenus,
+                    Yaml::parse(file_get_contents(realpath($file))));
+                $container->addResource(new FileResource($file));
+            }
+        }
+
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yaml');
+
+        // validate menu configurations
+        foreach ($configuredMenus as $rootName => $menuConfiguration) {
+            $configuration                = new MenuConfiguration();
+            $menuConfiguration[$rootName] = $this->processConfiguration($configuration->setMenuRootName($rootName),
+                [$rootName => $menuConfiguration]);
+        }
+
+        // Set configuration to be used in a custom service
+        $container->setParameter('harmony_menu.configuration', $configuredMenus);
+        // Last argument of this service is always the menu configuration
+        $container->getDefinition(ConfigurationMenuProvider::class)->setArgument('$configuration', $configuredMenus);
     }
 
     /**
