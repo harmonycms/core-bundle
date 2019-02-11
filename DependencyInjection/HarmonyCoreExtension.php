@@ -3,6 +3,7 @@
 namespace Harmony\Bundle\CoreBundle\DependencyInjection;
 
 use Harmony\Bundle\CoreBundle\Provider\ConfigurationMenuProvider;
+use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -61,6 +62,10 @@ class HarmonyCoreExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('harmony_menu.configuration', $configuredMenus);
         // Last argument of this service is always the menu configuration
         $container->getDefinition(ConfigurationMenuProvider::class)->setArgument('$configuration', $configuredMenus);
+
+        $routeImporter = new RouteImporter($container);
+        $routeImporter->addObjectResource($this);
+        $routeImporter->import('@HarmonyCoreBundle/Resources/config/routing.yaml', 'main');
     }
 
     /**
