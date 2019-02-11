@@ -77,6 +77,16 @@ abstract class AbstractKernel extends BaseKernel
     abstract public function registerThemes(): iterable;
 
     /**
+     * Gets the registered theme instances.
+     *
+     * @return ThemeInterface[] An array of registered theme instances
+     */
+    public function getThemes(): array
+    {
+        return $this->themes;
+    }
+
+    /**
      * Initializes themes.
      *
      * @throws \LogicException if two themes share a common name
