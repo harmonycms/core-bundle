@@ -18,10 +18,10 @@
     "doctrine/doctrine-bundle": "^1.9",
     "doctrine/persistence": "^1.0",
     "friendsofsymfony/user-bundle": "^2.1",
+    "harmony/menu-bundle": "dev-master",
     "harmony/theme-bundle": "dev-master",
     "harmony/web-profiler-bundle": "dev-master",
     "helis/settings-manager-bundle": "dev-master",
-    "knplabs/knp-menu-bundle": "^2.2",
     "rollerworks/route-autowiring-bundle": "^1.1"
   },
   "autoload": {

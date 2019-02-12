@@ -15,6 +15,3 @@ services:
       - { name: settings_manager.provider, provider: orm, priority: 20 }
 
   Harmony\Bundle\CoreBundle\Manager\SettingsManager: ~
-
-  Harmony\Bundle\CoreBundle\Provider\ConfigurationMenuProvider:
-    tags: ['knp_menu.provider']
