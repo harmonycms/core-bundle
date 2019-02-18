@@ -171,11 +171,18 @@ abstract class AbstractKernel extends BaseKernel
             $themes[$name] = \get_class($theme);
         }
 
+        $extensions = [];
+        foreach ($this->extensions as $name => $extension) {
+            $extensions[$name] = \get_class($extension);
+        }
+
         return array_merge(parent::getKernelParameters(), [
-            'kernel.app_name'    => $this->appName,
-            'kernel.app_version' => $this->appVersion,
-            'kernel.theme_dir'   => $this->getThemeDir(),
-            'kernel.themes'      => $themes
+            'kernel.app_name'      => $this->appName,
+            'kernel.app_version'   => $this->appVersion,
+            'kernel.theme_dir'     => $this->getThemeDir(),
+            'kernel.themes'        => $themes,
+            'kernel.extension_dir' => $this->getExtensionDir(),
+            'kernel.extensions'    => $extensions
         ]);
     }
 }
