@@ -2,7 +2,7 @@
 
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
-use Harmony\Sdk\Extension\Extension;
+use Harmony\Sdk\Extension\AbstractExtension;
 use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
@@ -149,7 +149,7 @@ abstract class AbstractKernel extends BaseKernel
     {
         // init extensions
         $this->extensions = [];
-        /** @var Extension $extension */
+        /** @var AbstractExtension $extension */
         foreach ($this->registerExtensions() as $extension) {
             $name = $extension->getIdentifier();
             if (isset($this->extensions[$name])) {
