@@ -2,6 +2,8 @@
 
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
+use Harmony\Sdk\Extension\Extension;
+use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
@@ -28,6 +30,9 @@ abstract class AbstractKernel extends BaseKernel
     /** @var ThemeInterface[] $themes */
     protected $themes = [];
 
+    /** @var ExtensionInterface[] $extensions */
+    protected $extensions = [];
+
     /**
      * Boots the current kernel.
      */
@@ -37,6 +42,9 @@ abstract class AbstractKernel extends BaseKernel
 
         // init themes
         $this->initializeThemes();
+
+        // init extensions
+        $this->initializeExtensions();
     }
 
     /**
@@ -87,6 +95,33 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
+     * Get the extensions directory.
+     *
+     * @return string
+     */
+    public function getExtensionDir(): string
+    {
+        return $this->getProjectDir() . '/extensions';
+    }
+
+    /**
+     * Returns an array of extensions to register.
+     *
+     * @return iterable|ExtensionInterface[] An iterable of extension instances
+     */
+    abstract public function registerExtensions(): iterable;
+
+    /**
+     * Gets the registered extension instances.
+     *
+     * @return ExtensionInterface[] An array of registered extension instances
+     */
+    public function getExtensions(): array
+    {
+        return $this->extensions;
+    }
+
+    /**
      * Initializes themes.
      *
      * @throws \LogicException if two themes share a common name
@@ -102,6 +137,25 @@ abstract class AbstractKernel extends BaseKernel
                 throw new \LogicException(sprintf('Trying to register two themes with the same name "%s"', $name));
             }
             $this->themes[$name] = $theme;
+        }
+    }
+
+    /**
+     * Initializes extensions.
+     *
+     * @throws \LogicException if two extensions share a common name
+     */
+    protected function initializeExtensions(): void
+    {
+        // init extensions
+        $this->extensions = [];
+        /** @var Extension $extension */
+        foreach ($this->registerExtensions() as $extension) {
+            $name = $extension->getIdentifier();
+            if (isset($this->extensions[$name])) {
+                throw new \LogicException(sprintf('Trying to register two extensions with the same name "%s"', $name));
+            }
+            $this->extensions[$name] = $extension;
         }
     }
 
