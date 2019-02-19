@@ -3,9 +3,11 @@
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
 use Harmony\Sdk\Extension\AbstractExtension;
+use Harmony\Sdk\Extension\ContainerExtensionInterface;
 use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 /**
@@ -45,6 +47,24 @@ abstract class AbstractKernel extends BaseKernel
 
         // init extensions
         $this->initializeExtensions();
+    }
+
+    /**
+     * The extension point similar to the Bundle::build() method.
+     * Use this method to register compiler passes and manipulate the container during the building process.
+     *
+     * @param ContainerBuilder $container
+     */
+    protected function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        foreach ($this->getExtensions() as $extension) {
+            if ($extension instanceof ContainerExtensionInterface && $containerExtension
+                    = $extension->getContainerExtension()) {
+                $container->registerExtension($containerExtension);
+            }
+        }
     }
 
     /**
