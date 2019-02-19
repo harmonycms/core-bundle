@@ -36,18 +36,57 @@ abstract class AbstractKernel extends BaseKernel
     /** @var ExtensionInterface[] $extensions */
     protected $extensions = [];
 
+    /** @var int $requestStackSize */
+    private $requestStackSize = 0;
+
+    /** @var bool $resetServices */
+    private $resetServices = false;
+
     /**
      * Boots the current kernel.
      */
     public function boot()
     {
-        parent::boot();
+        if (true === $this->booted) {
+            if (!$this->requestStackSize && $this->resetServices) {
+                if ($this->container->has('services_resetter')) {
+                    $this->container->get('services_resetter')->reset();
+                }
+                $this->resetServices = false;
+                if ($this->debug) {
+                    $this->startTime = microtime(true);
+                }
+            }
+
+            return;
+        }
+        if ($this->debug) {
+            $this->startTime = microtime(true);
+        }
+        if ($this->debug && !isset($_ENV['SHELL_VERBOSITY']) && !isset($_SERVER['SHELL_VERBOSITY'])) {
+            putenv('SHELL_VERBOSITY=3');
+            $_ENV['SHELL_VERBOSITY']    = 3;
+            $_SERVER['SHELL_VERBOSITY'] = 3;
+        }
+
+        // init bundles
+        $this->initializeBundles();
 
         // init themes
         $this->initializeThemes();
 
         // init extensions
         $this->initializeExtensions();
+
+        // init container
+        $this->initializeContainer();
+
+        foreach ($this->getBundles() as $bundle) {
+            $bundle->setContainer($this->container);
+            $bundle->boot();
+        }
+
+        $this->booted = true;
     }
 
     /**
