@@ -43,6 +43,20 @@ abstract class AbstractKernel extends BaseKernel
     private $resetServices = false;
 
     /**
+     * Returns an array of themes to register.
+     *
+     * @return iterable|ThemeInterface[] An iterable of theme instances
+     */
+    abstract public function registerThemes(): iterable;
+
+    /**
+     * Returns an array of extensions to register.
+     *
+     * @return iterable|ExtensionInterface[] An iterable of extension instances
+     */
+    abstract public function registerExtensions(): iterable;
+
+    /**
      * Boots the current kernel.
      */
     public function boot()
@@ -90,35 +104,6 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
-     * The extension point similar to the Bundle::build() method.
-     * Use this method to register compiler passes and manipulate the container during the building process.
-     *
-     * @param ContainerBuilder $container
-     */
-    protected function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-
-        $containerExtensions = [];
-        foreach ($this->getExtensions() as $extension) {
-            if ($extension instanceof ContainerExtensionInterface && $containerExtension
-                    = $extension->getContainerExtension()) {
-                $container->registerExtension($containerExtension);
-
-                // Debug
-                if ($this->debug) {
-                    $container->addObjectResource($extension);
-                }
-
-                $containerExtensions[] = $containerExtension->getAlias();
-            }
-        }
-
-        // ensure these extensions are implicitly loaded
-        $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($containerExtensions));
-    }
-
-    /**
      * Gets the application name of the kernel.
      *
      * @return string The kernel name
@@ -149,13 +134,6 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
-     * Returns an array of themes to register.
-     *
-     * @return iterable|ThemeInterface[] An iterable of theme instances
-     */
-    abstract public function registerThemes(): iterable;
-
-    /**
      * Gets the registered theme instances.
      *
      * @return ThemeInterface[] An array of registered theme instances
@@ -163,6 +141,18 @@ abstract class AbstractKernel extends BaseKernel
     public function getThemes(): array
     {
         return $this->themes;
+    }
+
+    /**
+     * Returns a theme.
+     *
+     * @param string $name
+     *
+     * @return ThemeInterface|null
+     */
+    public function getTheme(string $name): ?ThemeInterface
+    {
+        return $this->themes[$name] ?? null;
     }
 
     /**
@@ -176,13 +166,6 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
-     * Returns an array of extensions to register.
-     *
-     * @return iterable|ExtensionInterface[] An iterable of extension instances
-     */
-    abstract public function registerExtensions(): iterable;
-
-    /**
      * Gets the registered extension instances.
      *
      * @return ExtensionInterface[] An array of registered extension instances
@@ -190,6 +173,80 @@ abstract class AbstractKernel extends BaseKernel
     public function getExtensions(): array
     {
         return $this->extensions;
+    }
+
+    /**
+     * Returns an extension.
+     *
+     * @param string $name
+     *
+     * @return ExtensionInterface|null
+     */
+    public function getExtension(string $name): ?ExtensionInterface
+    {
+        return $this->extensions[$name] ?? null;
+    }
+
+    /**
+     * Returns the file path for a given bundle resource.
+     * A Resource can be a file or a directory.
+     * The resource name must follow the following pattern:
+     *     "@BundleName/path/to/a/file.something"
+     * where BundleName is the name of the bundle
+     * and the remaining part is the relative path in the bundle.
+     * If $dir is passed, and the first segment of the path is "Resources",
+     * this method will look for a file named:
+     *     $dir/<BundleName>/path/without/Resources
+     * before looking in the bundle resource folder.
+     *
+     * @param string $name  A resource name to locate
+     * @param string $dir   A directory where to look for the resource first
+     * @param bool   $first Whether to return the first path or paths for all matching bundles
+     *
+     * @return string|array The absolute path of the resource or an array if $first is false
+     * @throws \InvalidArgumentException if the file cannot be found or the name is not valid
+     * @throws \RuntimeException         if the name contains invalid/unsafe characters
+     */
+    public function locateResource($name, $dir = null, $first = true)
+    {
+        if ('@' !== $name[0]) {
+            throw new \InvalidArgumentException(sprintf('A resource name must start with @ ("%s" given).', $name));
+        }
+
+        if (false !== strpos($name, '..')) {
+            throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
+        }
+
+        $bundleName = substr($name, 1);
+        $path       = '';
+        if (false !== strpos($bundleName, '/')) {
+            list($bundleName, $path) = explode('/', $bundleName, 2);
+        }
+
+        $isResource   = 0 === strpos($path, 'Resources') && null !== $dir;
+        $overridePath = substr($path, 9);
+        // Override: try to load `bundle` from extension first
+        if (null === $bundle = $this->getExtension($bundleName)) {
+            $bundle = $this->getBundle($bundleName);
+        }
+        $files = [];
+
+        if ($isResource && file_exists($file = $dir . '/' . $bundle->getName() . $overridePath)) {
+            $files[] = $file;
+        }
+
+        if (file_exists($file = $bundle->getPath() . '/' . $path)) {
+            if ($first && !$isResource) {
+                return $file;
+            }
+            $files[] = $file;
+        }
+
+        if (\count($files) > 0) {
+            return $first && $isResource ? $files[0] : $files;
+        }
+
+        throw new \InvalidArgumentException(sprintf('Unable to find file "%s".', $name));
     }
 
     /**
@@ -228,6 +285,35 @@ abstract class AbstractKernel extends BaseKernel
             }
             $this->extensions[$name] = $extension;
         }
+    }
+
+    /**
+     * The extension point similar to the Bundle::build() method.
+     * Use this method to register compiler passes and manipulate the container during the building process.
+     *
+     * @param ContainerBuilder $container
+     */
+    protected function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $containerExtensions = [];
+        foreach ($this->getExtensions() as $extension) {
+            if ($extension instanceof ContainerExtensionInterface && $containerExtension
+                    = $extension->getContainerExtension()) {
+                $container->registerExtension($containerExtension);
+
+                // Debug
+                if ($this->debug) {
+                    $container->addObjectResource($extension);
+                }
+
+                $containerExtensions[] = $containerExtension->getAlias();
+            }
+        }
+
+        // ensure these extensions are implicitly loaded
+        $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($containerExtensions));
     }
 
     /**
