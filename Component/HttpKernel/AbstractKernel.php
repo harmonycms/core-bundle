@@ -8,6 +8,7 @@ use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 /**
@@ -59,12 +60,23 @@ abstract class AbstractKernel extends BaseKernel
     {
         parent::build($container);
 
+        $containerExtensions = [];
         foreach ($this->getExtensions() as $extension) {
             if ($extension instanceof ContainerExtensionInterface && $containerExtension
                     = $extension->getContainerExtension()) {
                 $container->registerExtension($containerExtension);
+
+                // Debug
+                if ($this->debug) {
+                    $container->addObjectResource($extension);
+                }
+
+                $containerExtensions[] = $containerExtension->getAlias();
             }
         }
+
+        // ensure these extensions are implicitly loaded
+        $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($containerExtensions));
     }
 
     /**
