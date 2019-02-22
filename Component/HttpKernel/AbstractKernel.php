@@ -4,6 +4,7 @@ namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
 use Harmony\Sdk\Extension\AbstractExtension;
 use Harmony\Sdk\Extension\ContainerExtensionInterface;
+use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
@@ -95,9 +96,17 @@ abstract class AbstractKernel extends BaseKernel
         // init container
         $this->initializeContainer();
 
+        // Boot bundles
         foreach ($this->getBundles() as $bundle) {
             $bundle->setContainer($this->container);
             $bundle->boot();
+        }
+
+        // Boot extensions
+        foreach ($this->getExtensions() as $extension) {
+            if ($extension instanceof BootableInterface) {
+                $extension->boot();
+            }
         }
 
         $this->booted = true;
