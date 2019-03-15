@@ -20,6 +20,7 @@
     "doctrine/persistence": "^1.0",
     "harmony/extension-bundle": "dev-master",
     "harmony/menu-bundle": "dev-master",
+    "harmony/settings-manager-bundle": "dev-master",
     "harmony/theme-bundle": "dev-master",
     "harmony/web-profiler-bundle": "dev-master",
     "rollerworks/route-autowiring-bundle": "^1.1"
