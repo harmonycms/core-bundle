@@ -3,16 +3,8 @@ services:
     public: false
     autowire: true
     autoconfigure: true
-    bind:
-      $entityManager: '@doctrine.orm.default_entity_manager'
-      $settingsEntityClass: 'Harmony\Bundle\CoreBundle\Entity\Setting'
-      $tagEntityClass: 'Harmony\Bundle\CoreBundle\Entity\SettingTag'
 
   Harmony\Bundle\CoreBundle\EventSubscriber\RouterListener: ~
-
-  Helis\SettingsManagerBundle\Provider\DoctrineOrmSettingsProvider:
-    tags:
-      - { name: settings_manager.provider, provider: orm, priority: 20 }
 
   Harmony\Bundle\CoreBundle\Form\Type\UserRoleType:
     arguments:
