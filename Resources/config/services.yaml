@@ -14,8 +14,6 @@ services:
     tags:
       - { name: settings_manager.provider, provider: orm, priority: 20 }
 
-  Harmony\Bundle\CoreBundle\Manager\SettingsManager: ~
-
   Harmony\Bundle\CoreBundle\Form\Type\UserRoleType:
     arguments:
       $roleHierarchy: '%security.role_hierarchy.roles%'
