@@ -3,7 +3,6 @@
 namespace Harmony\Bundle\CoreBundle;
 
 use Harmony\Bundle\CoreBundle\DependencyInjection\Compiler\RouteAutowiringPass;
-use Harmony\Bundle\CoreBundle\DependencyInjection\Compiler\SettingsProviderPass;
 use Harmony\Bundle\CoreBundle\DependencyInjection\HarmonyCoreExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -45,7 +44,6 @@ class HarmonyCoreBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new SettingsProviderPass());
         $container->addCompilerPass(new RouteAutowiringPass(), PassConfig::TYPE_OPTIMIZE);
     }
 }
