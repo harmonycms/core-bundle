@@ -22,7 +22,6 @@
     "harmony/menu-bundle": "dev-master",
     "harmony/theme-bundle": "dev-master",
     "harmony/web-profiler-bundle": "dev-master",
-    "helis/settings-manager-bundle": "dev-master",
     "rollerworks/route-autowiring-bundle": "^1.1"
   },
   "autoload": {
