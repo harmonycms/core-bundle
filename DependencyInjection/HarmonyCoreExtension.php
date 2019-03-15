@@ -64,11 +64,7 @@ class HarmonyCoreExtension extends Extension implements PrependExtensionInterfac
         // Yaml loader
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
 
-        if (isset($bundles['DoctrineBundle'])) {
-            $loader->load('doctrine.yaml');
-        }
-
-        if (isset($bundles['HelisSettingsManagerBundle'])) {
+        if (isset($bundles['HarmonySettingsManagerBundle'])) {
             $loader->load('settings_manager.yaml');
         }
     }

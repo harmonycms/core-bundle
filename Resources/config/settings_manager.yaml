@@ -1,4 +1,4 @@
-helis_settings_manager:
+harmony_settings_manager:
   settings:
     - name: site_name
       type: string
