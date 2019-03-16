@@ -2,6 +2,9 @@
 
 namespace Harmony\Bundle\CoreBundle\DependencyInjection;
 
+use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry as MongoDBManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,6 +36,11 @@ class HarmonyCoreExtension extends Extension implements PrependExtensionInterfac
     {
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yaml');
+
+        // Alias service for `doctrine_mongodb` who is not previded by default by DoctrineMongodbBundle
+        if (\class_exists(DoctrineMongoDBMappingsPass::class)) {
+            $container->setAlias(PersistenceManagerRegistry::class, MongoDBManagerRegistry::class);
+        }
 
         $routeImporter = new RouteImporter($container);
         $routeImporter->addObjectResource($this);
