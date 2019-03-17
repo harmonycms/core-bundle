@@ -37,8 +37,11 @@ class HarmonyCoreExtension extends Extension implements PrependExtensionInterfac
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yaml');
 
+        // get all bundles
+        $bundles = $container->getParameter('kernel.bundles');
+
         // Alias service for `doctrine_mongodb` who is not previded by default by DoctrineMongodbBundle
-        if (\class_exists(DoctrineMongoDBMappingsPass::class)) {
+        if (\class_exists(DoctrineMongoDBMappingsPass::class) && isset($bundles['DoctrineMongoDBBundle'])) {
             $container->setAlias(PersistenceManagerRegistry::class, MongoDBManagerRegistry::class);
         }
 
