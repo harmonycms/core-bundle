@@ -19,6 +19,7 @@
     "harmony/settings-manager-bundle": "dev-master",
     "harmony/theme-bundle": "dev-master",
     "harmony/web-profiler-bundle": "dev-master",
+    "myclabs/php-enum": "^1.4",
     "rollerworks/route-autowiring-bundle": "^1.1"
   },
   "autoload": {
