@@ -9,26 +9,3 @@ harmony_settings_manager:
       type: string
       description: 'In a few words, explain what this site is about.'
       tags: ['general']
-
-    - name: meta_title
-      type: string
-      tags: ['seo']
-    - name: meta_description
-      type: textarea
-      tags: ['seo']
-    - name: meta_keywords
-      type: textarea
-      description: 'Meta keywords should be separated by comma.'
-      tags: ['seo']
-    - name: meta_robots_index
-      type: choice
-      type_options: { expanded: true, multiple: false }
-      choices: { Index: index, NoIndex: noindex }
-      data: index
-      tags: ['seo']
-    - name: meta_robots_follow
-      type: choice
-      type_options: { expanded: true, multiple: false }
-      choices: { Follow: follow, NoFollow: nofollow }
-      data: 'follow'
-      tags: ['seo']
