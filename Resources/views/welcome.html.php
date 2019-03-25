@@ -41,7 +41,7 @@
 
             <div id="status">
                 <p>
-                    <svg id="icon-status" width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z" fill="#759E1A"/></svg>
+                    <svg id="icon-status" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="0 0 64 64" width="64" height="64"><defs><clipPath id="_clipPath_NQKiLFcDfEychLpWd4KvkKcdIyCcvFVY"><rect width="64" height="64"/></clipPath></defs><g clip-path="url(#_clipPath_NQKiLFcDfEychLpWd4KvkKcdIyCcvFVY)"><clipPath id="_clipPath_AaCk4VCSLqipsl84YGIUmBbTB5GIyJqy"><rect x="0" y="0" width="64" height="64" transform="matrix(1,0,0,1,0,0)" fill="rgb(255,255,255)"/></clipPath><g clip-path="url(#_clipPath_AaCk4VCSLqipsl84YGIUmBbTB5GIyJqy)"><g><path d=" M 30.791 31.04 L 18.489 18.695 L 37.113 0 L 49.436 12.352 L 30.791 31.04 Z  M 51.684 49.223 L 64 36.878 L 45.511 18.389 L 33.209 30.699 L 51.684 49.223 Z  M 14.706 51.648 L 27.022 64 L 45.696 45.305 L 33.38 32.96 L 14.706 51.648 Z  M 12.288 14.599 L 0 26.951 L 18.645 45.646 L 30.962 33.301 L 12.288 14.599 Z " fill="rgb(46,161,248)"/></g></g></g></svg>
 
                     Your application is now ready. You can start working on it at:<br>
                     <code><?php echo $baseDir; ?></code>
@@ -76,7 +76,7 @@
         </div>
         <div id="comment">
             <p>
-                You're seeing this page because debug mode is enabled and you haven't configured any homepage URL.
+                You're seeing this page because debug mode is enabled and you haven't active a default theme yet.
             </p>
         </div>
     </div>
