@@ -3,6 +3,7 @@
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
 use Harmony\Sdk\Extension\AbstractExtension;
+use Harmony\Sdk\Extension\BuildableInterface;
 use Harmony\Sdk\Extension\ContainerExtensionInterface;
 use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\ExtensionInterface;
@@ -11,6 +12,16 @@ use Harmony\Sdk\Theme\ThemeInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use function array_merge;
+use function count;
+use function explode;
+use function file_exists;
+use function get_class;
+use function microtime;
+use function putenv;
+use function sprintf;
+use function strpos;
+use function substr;
 
 /**
  * Class AbstractKernel
@@ -251,7 +262,7 @@ abstract class AbstractKernel extends BaseKernel
             $files[] = $file;
         }
 
-        if (\count($files) > 0) {
+        if (count($files) > 0) {
             return $first && $isResource ? $files[0] : $files;
         }
 
@@ -297,6 +308,43 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
+     * Prepares the ContainerBuilder before it is compiled.
+     *
+     * @param ContainerBuilder $container
+     */
+    protected function prepareContainer(ContainerBuilder $container)
+    {
+        foreach ($this->bundles as $bundle) {
+            if ($containerExtension = $bundle->getContainerExtension()) {
+                $container->registerExtension($containerExtension);
+            }
+
+            if ($this->debug) {
+                $container->addObjectResource($bundle);
+            }
+        }
+
+        foreach ($this->bundles as $bundle) {
+            $bundle->build($container);
+        }
+        foreach ($this->extensions as $extension) {
+            if ($extension instanceof BuildableInterface) {
+                $extension->build($container);
+            }
+        }
+
+        $this->build($container);
+
+        $extensions = [];
+        foreach ($container->getExtensions() as $containerExtension) {
+            $extensions[] = $containerExtension->getAlias();
+        }
+
+        // ensure these extensions are implicitly loaded
+        $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
+    }
+
+    /**
      * The extension point similar to the Bundle::build() method.
      * Use this method to register compiler passes and manipulate the container during the building process.
      *
@@ -334,12 +382,12 @@ abstract class AbstractKernel extends BaseKernel
     {
         $themes = [];
         foreach ($this->themes as $name => $theme) {
-            $themes[$name] = \get_class($theme);
+            $themes[$name] = get_class($theme);
         }
 
         $extensions = [];
         foreach ($this->extensions as $name => $extension) {
-            $extensions[$name] = \get_class($extension);
+            $extensions[$name] = get_class($extension);
         }
 
         return array_merge(parent::getKernelParameters(), [
