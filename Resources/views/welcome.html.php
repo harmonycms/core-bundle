@@ -24,7 +24,7 @@
         @media (min-width: 768px) {
             #wrapper { width: 80%; margin: 2em auto; }
             #icon-book { display: inline-block; }
-            #status a, #next a { display: block; }
+            #status a { display: block; }
 
             @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
             @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
@@ -65,12 +65,10 @@
                         L-7,58.6c0,4.8,8.1,13.9,11.6,14.1l34.7-0.1c3.9,0,7-3.4,7-7.6L46.1,20.9z M-0.3,36.4c0-8.6,6.5-15.6,14.5-15.6
                         c8,0,14.5,7,14.5,15.6S22.1,52,14.2,52C6.1,52-0.3,45-0.3,36.4z M42.1,65.1c0,1.8-1.5,3.1-3.1,3.1H4.6c-0.7,0-3-1.8-4.5-4.4h30.4
                         c2.8,0,5-2.4,5-5.4V17.9h3.7c1.6,0,2.9,1.4,2.9,3.1V65.1L42.1,65.1z"/>
-                </svg>
+                    </svg>
 
-                    Read the documentation to learn
-                    <a href="https://symfony.com/doc/<?php echo $docVersion; ?>/page_creation.html">
-                        How to create your first page in Symfony
-                    </a>
+                    Read the <a href="https://dev-docs.harmonycms.net" target="_blank">Harmony Developer Documentation</a>
+                    <br>to start building your website.
                 </p>
             </div>
         </div>
