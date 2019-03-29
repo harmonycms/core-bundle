@@ -10,6 +10,7 @@ use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use function array_merge;
@@ -324,12 +325,9 @@ abstract class AbstractKernel extends BaseKernel
             }
         }
 
-        foreach ($this->bundles as $bundle) {
-            $bundle->build($container);
-        }
-        foreach ($this->extensions as $extension) {
-            if ($extension instanceof BuildableInterface) {
-                $extension->build($container);
+        foreach (array_merge($this->bundles, $this->extensions) as $item) {
+            if ($item instanceof BuildableInterface || $item instanceof BundleInterface) {
+                $item->build($container);
             }
         }
 
