@@ -3,9 +3,9 @@
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
 use Harmony\Sdk\Extension\AbstractExtension;
+use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\BuildableInterface;
 use Harmony\Sdk\Extension\ContainerExtensionInterface;
-use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
@@ -383,18 +383,21 @@ abstract class AbstractKernel extends BaseKernel
             $themes[$name] = get_class($theme);
         }
 
-        $extensions = [];
+        $extensions         = [];
+        $extensionsMetadata = [];
         foreach ($this->extensions as $name => $extension) {
-            $extensions[$name] = get_class($extension);
+            $extensions[$name]         = get_class($extension);
+            $extensionsMetadata[$name] = ['path' => $extension->getPath(), 'namespace' => $extension->getIdentifier()];
         }
 
         return array_merge(parent::getKernelParameters(), [
-            'kernel.app_name'      => $this->appName,
-            'kernel.app_version'   => $this->appVersion,
-            'kernel.theme_dir'     => $this->getThemeDir(),
-            'kernel.themes'        => $themes,
-            'kernel.extension_dir' => $this->getExtensionDir(),
-            'kernel.extensions'    => $extensions
+            'kernel.app_name'            => $this->appName,
+            'kernel.app_version'         => $this->appVersion,
+            'kernel.theme_dir'           => $this->getThemeDir(),
+            'kernel.themes'              => $themes,
+            'kernel.extension_dir'       => $this->getExtensionDir(),
+            'kernel.extensions'          => $extensions,
+            'kernel.extensions_metadata' => $extensionsMetadata
         ]);
     }
 }
