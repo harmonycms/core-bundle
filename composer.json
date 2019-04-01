@@ -20,7 +20,8 @@
     "harmony/theme-bundle": "dev-master",
     "harmony/web-profiler-bundle": "dev-master",
     "myclabs/php-enum": "^1.4",
-    "rollerworks/route-autowiring-bundle": "^1.1"
+    "rollerworks/route-autowiring-bundle": "^1.1",
+    "symfony-cmf/routing-bundle": "^2.1"
   },
   "autoload": {
     "psr-4": {
