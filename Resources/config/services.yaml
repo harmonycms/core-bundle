@@ -7,7 +7,3 @@ services:
   Harmony\Bundle\CoreBundle\Controller\HomeController: ~
 
   Harmony\Bundle\CoreBundle\EventSubscriber\RouterListener: ~
-
-  Harmony\Bundle\CoreBundle\Form\Type\UserRoleType:
-    arguments:
-      $roleHierarchy: '%security.role_hierarchy.roles%'
