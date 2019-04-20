@@ -18,7 +18,7 @@ class HarmonyCoreBundle extends Bundle
 {
 
     /** Constants */
-    const VERSION         = '1.0.0';
+    const VERSION         = '1.0 Beta';
     const NAME            = 'HarmonyCMS';
     const SYMFONY_APP_DIR = 'app';
     const SYMFONY_WEB_DIR = 'web';
