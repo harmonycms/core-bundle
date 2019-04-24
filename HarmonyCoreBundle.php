@@ -6,8 +6,8 @@ use Harmony\Bundle\CoreBundle\DependencyInjection\Compiler\RouteAutowiringPass;
 use Harmony\Bundle\CoreBundle\DependencyInjection\HarmonyCoreExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Class HarmonyCoreBundle
@@ -18,10 +18,8 @@ class HarmonyCoreBundle extends Bundle
 {
 
     /** Constants */
-    const VERSION         = '1.0 Beta';
-    const NAME            = 'HarmonyCMS';
-    const SYMFONY_APP_DIR = 'app';
-    const SYMFONY_WEB_DIR = 'web';
+    const VERSION = '0.1';
+    const NAME    = 'HarmonyCMS';
 
     /**
      * Returns the bundle's container extension.

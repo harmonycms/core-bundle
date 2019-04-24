@@ -2,6 +2,7 @@
 
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
+use Harmony\Bundle\CoreBundle\HarmonyCoreBundle;
 use Harmony\Sdk\Extension\AbstractExtension;
 use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\BuildableInterface;
@@ -35,13 +36,12 @@ abstract class AbstractKernel extends BaseKernel
     /** Constants */
     const KERNEL_NAME = 'harmony';
     const APP_NAME    = 'Harmony';
-    const APP_VERSION = '1.0';
 
     /** @var string */
     protected $appName = self::APP_NAME;
 
     /** @var string */
-    protected $appVersion = self::APP_VERSION;
+    protected $appVersion = HarmonyCoreBundle::VERSION;
 
     /** @var ThemeInterface[] $themes */
     protected $themes = [];
