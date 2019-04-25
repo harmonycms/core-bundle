@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Welcome!</title>
+    <title>Welcome to HarmonyCMS!</title>
     <style>
         body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
         h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
