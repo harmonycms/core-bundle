@@ -117,6 +117,7 @@ abstract class AbstractKernel extends BaseKernel
         // Boot extensions
         foreach ($this->getExtensions() as $extension) {
             if ($extension instanceof BootableInterface) {
+                $extension->setContainer($this->container);
                 $extension->boot();
             }
         }
