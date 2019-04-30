@@ -10,6 +10,9 @@ use Harmony\Sdk\Extension\ContainerExtensionInterface;
 use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
+use InvalidArgumentException;
+use LogicException;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
@@ -226,17 +229,17 @@ abstract class AbstractKernel extends BaseKernel
      * @param bool   $first Whether to return the first path or paths for all matching bundles
      *
      * @return string|array The absolute path of the resource or an array if $first is false
-     * @throws \InvalidArgumentException if the file cannot be found or the name is not valid
-     * @throws \RuntimeException         if the name contains invalid/unsafe characters
+     * @throws InvalidArgumentException if the file cannot be found or the name is not valid
+     * @throws RuntimeException         if the name contains invalid/unsafe characters
      */
     public function locateResource($name, $dir = null, $first = true)
     {
         if ('@' !== $name[0]) {
-            throw new \InvalidArgumentException(sprintf('A resource name must start with @ ("%s" given).', $name));
+            throw new InvalidArgumentException(sprintf('A resource name must start with @ ("%s" given).', $name));
         }
 
         if (false !== strpos($name, '..')) {
-            throw new \RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
+            throw new RuntimeException(sprintf('File name "%s" contains invalid characters (..).', $name));
         }
 
         $bundleName = substr($name, 1);
@@ -268,13 +271,13 @@ abstract class AbstractKernel extends BaseKernel
             return $first && $isResource ? $files[0] : $files;
         }
 
-        throw new \InvalidArgumentException(sprintf('Unable to find file "%s".', $name));
+        throw new InvalidArgumentException(sprintf('Unable to find file "%s".', $name));
     }
 
     /**
      * Initializes themes.
      *
-     * @throws \LogicException if two themes share a common name
+     * @throws LogicException if two themes share a common name
      */
     protected function initializeThemes(): void
     {
@@ -284,7 +287,7 @@ abstract class AbstractKernel extends BaseKernel
         foreach ($this->registerThemes() as $theme) {
             $name = $theme->getIdentifier();
             if (isset($this->themes[$name])) {
-                throw new \LogicException(sprintf('Trying to register two themes with the same name "%s"', $name));
+                throw new LogicException(sprintf('Trying to register two themes with the same name "%s"', $name));
             }
             $this->themes[$name] = $theme;
         }
@@ -293,7 +296,7 @@ abstract class AbstractKernel extends BaseKernel
     /**
      * Initializes extensions.
      *
-     * @throws \LogicException if two extensions share a common name
+     * @throws LogicException if two extensions share a common name
      */
     protected function initializeExtensions(): void
     {
@@ -303,7 +306,7 @@ abstract class AbstractKernel extends BaseKernel
         foreach ($this->registerExtensions() as $extension) {
             $name = $extension->getIdentifier();
             if (isset($this->extensions[$name])) {
-                throw new \LogicException(sprintf('Trying to register two extensions with the same name "%s"', $name));
+                throw new LogicException(sprintf('Trying to register two extensions with the same name "%s"', $name));
             }
             $this->extensions[$name] = $extension;
         }
