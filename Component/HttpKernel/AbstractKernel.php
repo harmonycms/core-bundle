@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use LogicException;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
@@ -51,6 +52,9 @@ abstract class AbstractKernel extends BaseKernel
 
     /** @var ExtensionInterface[] $extensions */
     protected $extensions = [];
+
+    /** @var ContainerInterface $container */
+    protected $container;
 
     /** @var int $requestStackSize */
     private $requestStackSize = 0;
