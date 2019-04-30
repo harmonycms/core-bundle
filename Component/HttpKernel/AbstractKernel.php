@@ -3,6 +3,7 @@
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
 use Harmony\Bundle\CoreBundle\HarmonyCoreBundle;
+use Harmony\Bundle\ExtensionBundle\Manager\ComponentManager;
 use Harmony\Sdk\Extension\AbstractExtension;
 use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\BuildableInterface;
@@ -56,11 +57,26 @@ abstract class AbstractKernel extends BaseKernel
     /** @var ContainerInterface $container */
     protected $container;
 
+    /** @var ComponentManager $componentManager */
+    protected $componentManager;
+
     /** @var int $requestStackSize */
     private $requestStackSize = 0;
 
     /** @var bool $resetServices */
     private $resetServices = false;
+
+    /**
+     * AbstractKernel constructor.
+     *
+     * @param string $environment
+     * @param bool   $debug
+     */
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+        $this->componentManager = new ComponentManager();
+    }
 
     /**
      * Returns an array of themes to register.
@@ -217,6 +233,16 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
+     * Get ComponentManager
+     *
+     * @return ComponentManager
+     */
+    public function getComponentManager(): ComponentManager
+    {
+        return $this->componentManager;
+    }
+
+    /**
      * Returns the file path for a given bundle resource.
      * A Resource can be a file or a directory.
      * The resource name must follow the following pattern:
@@ -312,7 +338,12 @@ abstract class AbstractKernel extends BaseKernel
             if (isset($this->extensions[$name])) {
                 throw new LogicException(sprintf('Trying to register two extensions with the same name "%s"', $name));
             }
-            $this->extensions[$name] = $extension;
+
+            if (AbstractExtension::COMPONENT === $extension->getExtensionType()) {
+                $this->componentManager->add($extension);
+            } else {
+                $this->extensions[$name] = $extension;
+            }
         }
     }
 
