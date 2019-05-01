@@ -14,12 +14,12 @@
     ],
     "require": {
         "php": ">=7.1.3",
-        "harmony/extension-bundle": "^0.1",
-        "harmony/menu-bundle": "^0.1",
-        "harmony/routing-bundle": "^0.1",
-        "harmony/settings-manager-bundle": "^0.1",
-        "harmony/theme-bundle": "^0.1",
-        "harmony/web-profiler-bundle": "^0.1",
+        "harmony/extension-bundle": "dev-master",
+        "harmony/menu-bundle": "dev-master",
+        "harmony/routing-bundle": "dev-master",
+        "harmony/settings-manager-bundle": "dev-master",
+        "harmony/theme-bundle": "dev-master",
+        "harmony/web-profiler-bundle": "dev-master",
         "myclabs/php-enum": "^1.4",
         "rollerworks/route-autowiring-bundle": "^1.1"
     },
