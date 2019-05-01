@@ -3,7 +3,6 @@
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
 use Harmony\Bundle\CoreBundle\HarmonyCoreBundle;
-use Harmony\Bundle\ExtensionBundle\Manager\ComponentManager;
 use Harmony\Sdk\Extension\AbstractExtension;
 use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\BuildableInterface;
@@ -54,11 +53,11 @@ abstract class AbstractKernel extends BaseKernel
     /** @var ExtensionInterface[] $extensions */
     protected $extensions = [];
 
+    /** @var ExtensionInterface[] $components */
+    protected $components = [];
+
     /** @var ContainerInterface $container */
     protected $container;
-
-    /** @var ComponentManager $componentManager */
-    protected $componentManager;
 
     /** @var int $requestStackSize */
     private $requestStackSize = 0;
@@ -75,7 +74,6 @@ abstract class AbstractKernel extends BaseKernel
     public function __construct(string $environment, bool $debug)
     {
         parent::__construct($environment, $debug);
-        $this->componentManager = new ComponentManager();
     }
 
     /**
@@ -233,13 +231,11 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
-     * Get ComponentManager
-     *
-     * @return ComponentManager
+     * @return array
      */
-    public function getComponentManager(): ComponentManager
+    public function getComponents(): array
     {
-        return $this->componentManager;
+        return $this->components;
     }
 
     /**
@@ -340,7 +336,7 @@ abstract class AbstractKernel extends BaseKernel
             }
 
             if (AbstractExtension::COMPONENT === $extension->getExtensionType()) {
-                $this->componentManager->add($extension);
+                $this->components[$name] = $extension;
             } else {
                 $this->extensions[$name] = $extension;
             }
