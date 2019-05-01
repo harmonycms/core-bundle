@@ -53,9 +53,6 @@ abstract class AbstractKernel extends BaseKernel
     /** @var ExtensionInterface[] $extensions */
     protected $extensions = [];
 
-    /** @var ExtensionInterface[] $components */
-    protected $components = [];
-
     /** @var ContainerInterface $container */
     protected $container;
 
@@ -231,14 +228,6 @@ abstract class AbstractKernel extends BaseKernel
     }
 
     /**
-     * @return array
-     */
-    public function getComponents(): array
-    {
-        return $this->components;
-    }
-
-    /**
      * Returns the file path for a given bundle resource.
      * A Resource can be a file or a directory.
      * The resource name must follow the following pattern:
@@ -335,11 +324,7 @@ abstract class AbstractKernel extends BaseKernel
                 throw new LogicException(sprintf('Trying to register two extensions with the same name "%s"', $name));
             }
 
-            if (AbstractExtension::COMPONENT === $extension->getExtensionType()) {
-                $this->components[$name] = $extension;
-            } else {
-                $this->extensions[$name] = $extension;
-            }
+            $this->extensions[$name] = $extension;
         }
     }
 
