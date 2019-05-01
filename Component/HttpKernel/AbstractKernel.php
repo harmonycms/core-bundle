@@ -6,6 +6,7 @@ use Harmony\Bundle\CoreBundle\HarmonyCoreBundle;
 use Harmony\Sdk\Extension\AbstractExtension;
 use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\BuildableInterface;
+use Harmony\Sdk\Extension\Component;
 use Harmony\Sdk\Extension\ContainerExtensionInterface;
 use Harmony\Sdk\Extension\ExtensionInterface;
 use Harmony\Sdk\Theme\Theme;
@@ -408,6 +409,10 @@ abstract class AbstractKernel extends BaseKernel
         foreach ($this->extensions as $name => $extension) {
             $extensions[$name]         = get_class($extension);
             $extensionsMetadata[$name] = ['path' => $extension->getPath(), 'namespace' => $extension->getIdentifier()];
+            /** @var Component $extension */
+            if (AbstractExtension::COMPONENT === $extension->getExtensionType()) {
+                $extensionsMetadata[$name]['type'] = $extension->getType();
+            }
         }
 
         return array_merge(parent::getKernelParameters(), [
