@@ -5,5 +5,3 @@ services:
     autoconfigure: true
 
   Harmony\Bundle\CoreBundle\Controller\HomeController: ~
-
-  Harmony\Bundle\CoreBundle\EventSubscriber\RouterListener: ~
