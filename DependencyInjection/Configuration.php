@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder(HarmonyCoreExtension::ALIAS);
 
         $treeBuilder->getRootNode()
+            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('theme_default')->defaultNull()->end()
             ->end()
