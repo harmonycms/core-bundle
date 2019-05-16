@@ -5,19 +5,22 @@ namespace Harmony\Bundle\CoreBundle\DependencyInjection;
 use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry as MongoDBManagerRegistry;
 use Doctrine\Common\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use Exception;
+use InvalidArgumentException;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use function class_exists;
+use function dirname;
 
 /**
  * Class HarmonyCoreExtension
  *
  * @package Harmony\Bundle\CoreBundle\DependencyInjection
  */
-class HarmonyCoreExtension extends Extension implements PrependExtensionInterface
+class HarmonyCoreExtension extends Extension
 {
 
     /** HarmonyCMS alias name */
@@ -29,8 +32,8 @@ class HarmonyCoreExtension extends Extension implements PrependExtensionInterfac
      * @param array            $configs   An array of configuration values
      * @param ContainerBuilder $container A ContainerBuilder instance
      *
-     * @throws \InvalidArgumentException When provided tag is not defined in this extension
-     * @throws \Exception
+     * @throws InvalidArgumentException When provided tag is not defined in this extension
+     * @throws Exception
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -41,7 +44,7 @@ class HarmonyCoreExtension extends Extension implements PrependExtensionInterfac
         $bundles = $container->getParameter('kernel.bundles');
 
         // Alias service for `doctrine_mongodb` who is not previded by default by DoctrineMongodbBundle
-        if (\class_exists(DoctrineMongoDBMappingsPass::class) && isset($bundles['DoctrineMongoDBBundle'])) {
+        if (class_exists(DoctrineMongoDBMappingsPass::class) && isset($bundles['DoctrineMongoDBBundle'])) {
             $container->setAlias(PersistenceManagerRegistry::class, MongoDBManagerRegistry::class);
         }
 
@@ -58,25 +61,5 @@ class HarmonyCoreExtension extends Extension implements PrependExtensionInterfac
     public function getAlias(): string
     {
         return self::ALIAS;
-    }
-
-    /**
-     * Allow an extension to prepend the extension configurations.
-     *
-     * @param ContainerBuilder $container
-     *
-     * @throws \Exception
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-        // get all bundles
-        $bundles = $container->getParameter('kernel.bundles');
-
-        // Yaml loader
-        $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
-
-        if (isset($bundles['HarmonySettingsManagerBundle'])) {
-            $loader->load('settings_manager.yaml');
-        }
     }
 }

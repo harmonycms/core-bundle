@@ -17,7 +17,6 @@
         "harmony/extension-bundle": "dev-master",
         "harmony/menu-bundle": "dev-master",
         "harmony/routing-bundle": "dev-master",
-        "harmony/settings-manager-bundle": "dev-master",
         "harmony/theme-bundle": "dev-master",
         "harmony/web-profiler-bundle": "dev-master",
         "myclabs/php-enum": "^1.4"
