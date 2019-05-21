@@ -342,7 +342,7 @@ abstract class AbstractKernel extends BaseKernel
      */
     protected function getContainerBuilder(): TaggedContainerInterface
     {
-        $bundles = $this->getKernelParameters()['kernel.bundles'];
+        $bundles = $this->getBundles();
         if (class_exists(DoctrineOrmMappingsPass::class) && isset($bundles['DoctrineBundle'])) {
             $container = new ContainerBuilderOrm();
         } elseif (class_exists(DoctrineOrmMappingsPass::class) && isset($bundles['DoctrineBundle'])) {
