@@ -5,8 +5,8 @@
                         http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
     <mapped-superclass name="Harmony\Bundle\CoreBundle\Model\Parameter">
-        <field name="name" length="255"/>
-        <field name="value" length="255"/>
+        <field name="name"/>
+        <field name="value"/>
     </mapped-superclass>
 
 </doctrine-mongo-mapping>

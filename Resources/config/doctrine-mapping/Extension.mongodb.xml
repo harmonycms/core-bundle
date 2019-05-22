@@ -5,7 +5,7 @@
                         http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
     <mapped-superclass name="Harmony\Bundle\CoreBundle\Model\Extension">
-        <field name="name" length="255"/>
+        <field name="name"/>
     </mapped-superclass>
 
 </doctrine-mongo-mapping>
