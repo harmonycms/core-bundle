@@ -2,7 +2,6 @@
 
 namespace Harmony\Bundle\CoreBundle\Provider;
 
-use Exception;
 use PDOException;
 use ProxyManager\Configuration;
 use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
@@ -56,7 +55,7 @@ abstract class AbstractContainerBuilder extends BaseContainerBuilder
             $this->addDbConfig();
             $this->closeConnection();
         }
-        catch (PDOException|Exception $e) {
+        catch (PDOException $e) {
             parent::compile($resolveEnvPlaceholders);
 
             return;
