@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
  *
  * @package Harmony\Bundle\CoreBundle\Model
  */
-abstract class Config
+class Config
 {
 
     /**

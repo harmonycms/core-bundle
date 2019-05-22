@@ -6,6 +6,8 @@ use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Harmony\Bundle\CoreBundle\Model\Config;
+use Harmony\Bundle\CoreBundle\Model\Extension;
 use function array_merge_recursive;
 use function ltrim;
 use function rtrim;
