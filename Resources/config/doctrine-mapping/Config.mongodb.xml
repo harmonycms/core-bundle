@@ -6,7 +6,7 @@
 
     <mapped-superclass name="Harmony\Bundle\CoreBundle\Model\Config">
         <field name="name"/>
-        <field name="value"/>
+        <field name="value" nullable="true"/>
     </mapped-superclass>
 
 </doctrine-mongo-mapping>
