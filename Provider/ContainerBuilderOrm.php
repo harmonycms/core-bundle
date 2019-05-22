@@ -53,7 +53,11 @@ class ContainerBuilderOrm extends AbstractContainerBuilder
 
         $connection_factory       = new ConnectionFactory([]);
         $this->databaseConnection = $connection_factory->createConnection($params);
-        $this->databaseConnection->connect();
+        try {
+            $this->databaseConnection->connect();
+        }
+        catch (DBALException $e) {
+        }
     }
 
     /**
