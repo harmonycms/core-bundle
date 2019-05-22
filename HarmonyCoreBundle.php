@@ -24,6 +24,12 @@ class HarmonyCoreBundle extends Bundle
     const VERSION = '0.1';
     const NAME    = 'HarmonyCMS';
 
+    /**
+     * Builds the bundle.
+     * It is only ever called once when the cache is empty.
+     *
+     * @param ContainerBuilder $container
+     */
     public function build(ContainerBuilder $container)
     {
         // get all bundles
