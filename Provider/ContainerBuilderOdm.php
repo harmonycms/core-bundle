@@ -73,7 +73,7 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
 
         $collection = $this->databaseConnection->selectCollection($this->defaultDatabase, 'container_parameter');
         foreach ($collection->find() as $parameter) {
-            $this->setParameter($parameter->name, $parameter->value);
+            $this->setParameter($parameter['name'], $parameter['value']);
         }
     }
 
