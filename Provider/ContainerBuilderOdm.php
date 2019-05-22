@@ -67,11 +67,11 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
      */
     protected function addDbParameters(): void
     {
-        if (false === $this->checkCollectionExist('container_parameter')) {
+        if (false === $this->checkCollectionExist('ContainerParameter')) {
             return;
         }
 
-        $collection = $this->databaseConnection->selectCollection($this->defaultDatabase, 'container_parameter');
+        $collection = $this->databaseConnection->selectCollection($this->defaultDatabase, 'ContainerParameter');
         foreach ($collection->find() as $parameter) {
             $this->setParameter($parameter['name'], $parameter['value']);
         }
@@ -84,7 +84,7 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
      */
     protected function addDbConfig(): void
     {
-        if (false === $this->checkCollectionExist('container_config')) {
+        if (false === $this->checkCollectionExist('ContainerConfig')) {
             return;
         }
     }
