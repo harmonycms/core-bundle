@@ -7,12 +7,6 @@
     <mapped-superclass name="Harmony\Bundle\CoreBundle\Model\Config">
         <field name="name" column="name" length="255"/>
         <field name="value" column="value" length="255"/>
-        <many-to-one field="parent" target-entity="Harmony\Bundle\CoreBundle\Model\Config" inversed-by="children">
-            <join-column name="parent_id" on-delete="CASCADE"/>
-        </many-to-one>
-        <many-to-one field="extension" target-entity="Harmony\Bundle\CoreBundle\Model\Extension" inversed-by="configs">
-            <join-column name="extension_id" on-delete="CASCADE"/>
-        </many-to-one>
     </mapped-superclass>
 
 </doctrine-mapping>
