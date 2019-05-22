@@ -2,6 +2,7 @@
 
 namespace Harmony\Bundle\CoreBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -41,6 +42,14 @@ abstract class Config
      * @var Extension $extension
      */
     protected $extension;
+
+    /**
+     * Config constructor.
+     */
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     /**
      * Get Id
@@ -139,6 +148,34 @@ abstract class Config
     }
 
     /**
+     * Add children
+     *
+     * @param Config $children
+     *
+     * @return Config
+     */
+    public function addChildren(Config $children): Config
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param Config $children
+     *
+     * @return Config
+     */
+    public function removeChildren(Config $children): Config
+    {
+        $this->children->removeElement($children);
+
+        return $this;
+    }
+
+    /**
      * Get Parent
      *
      * @return Config
@@ -184,5 +221,26 @@ abstract class Config
         $this->extension = $extension;
 
         return $this;
+    }
+
+    /**
+     * @return array|int|string|null
+     */
+    public function getConfigTree()
+    {
+        if (count($this->children) > 0) {
+            $configArray = [];
+            foreach ($this->children as $child) {
+                $configArray[$child->getName()] = $child->getConfigTree();
+            }
+
+            return $configArray;
+        }
+
+        if (is_numeric($this->value)) {
+            $this->value = intval($this->value);
+        }
+
+        return $this->value;
     }
 }
