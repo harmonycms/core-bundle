@@ -2,6 +2,14 @@
 
 namespace Harmony\Bundle\CoreBundle\Provider;
 
+use Doctrine\MongoDB\Connection;
+use MongoCollection;
+use function array_merge_recursive;
+use function array_shift;
+use function in_array;
+use function ltrim;
+use function rtrim;
+
 /**
  * Class ContainerBuilderOdm
  *
@@ -10,6 +18,12 @@ namespace Harmony\Bundle\CoreBundle\Provider;
 class ContainerBuilderOdm extends AbstractContainerBuilder
 {
 
+    /** @var Connection $databaseConnection */
+    protected $databaseConnection;
+
+    /** @var string $defaultDatabase */
+    protected $defaultDatabase;
+
     /**
      * Initializes the database connection
      *
@@ -17,7 +31,33 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
      */
     protected function initConnection(): void
     {
-        // TODO: Implement initConnection() method.
+        $configs = $this->getExtensionConfig('doctrine_mongodb');
+
+        $params = [];
+        foreach ($configs as $config) {
+            $params = array_merge_recursive($params, $config);
+        }
+
+        if (isset($params['connections'])) {
+            foreach ($params['connections'] as $name => $values) {
+                if (isset($values['server'])) {
+                    $values['server']                       = ltrim($values['server'], '%env(');
+                    $values['server']                       = rtrim($values['server'], ')%');
+                    $params['connections'][$name]['server'] = $this->getEnv($values['server']);
+                }
+            }
+        }
+
+        if (isset($params['default_database'])) {
+            $params['default_database'] = ltrim($params['default_database'], '%env(');
+            $params['default_database'] = rtrim($params['default_database'], ')%');
+            $this->defaultDatabase      = $this->getEnv($params['default_database']);
+        }
+
+        $mainConnection = array_shift($params['connections']);
+
+        $this->databaseConnection = new Connection($mainConnection['server'], $mainConnection['options']);
+        $this->databaseConnection->connect();
     }
 
     /**
@@ -27,7 +67,14 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
      */
     protected function addDbParameters(): void
     {
-        // TODO: Implement addDbParameters() method.
+        if (false === $this->checkCollectionExist('container_parameter')) {
+            return;
+        }
+
+        $collection = $this->databaseConnection->selectCollection($this->defaultDatabase, 'container_parameter');
+        foreach ($collection->find() as $parameter) {
+            $this->setParameter($parameter->name, $parameter->value);
+        }
     }
 
     /**
@@ -37,7 +84,9 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
      */
     protected function addDbConfig(): void
     {
-        // TODO: Implement addDbConfig() method.
+        if (false === $this->checkCollectionExist('container_config')) {
+            return;
+        }
     }
 
     /**
@@ -47,6 +96,26 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
      */
     protected function closeConnection(): void
     {
-        // TODO: Implement closeConnection() method.
+        if ($this->databaseConnection->isConnected()) {
+            $this->databaseConnection->close();
+        }
+    }
+
+    /**
+     * Check if a given collection name exist in the database
+     *
+     * @param string $collectionName
+     *
+     * @return bool
+     */
+    protected function checkCollectionExist(string $collectionName): bool
+    {
+        $arrayCollectionNames = [];
+        /** @var MongoCollection $collection */
+        foreach ($this->databaseConnection->selectDatabase($this->defaultDatabase)->listCollections() as $collection) {
+            $arrayCollectionNames[] = $collection->getCollection()->getCollectionName();
+        }
+
+        return in_array($collectionName, $arrayCollectionNames);
     }
 }
