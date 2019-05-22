@@ -2,6 +2,7 @@
 
 namespace Harmony\Bundle\CoreBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -26,6 +27,14 @@ abstract class Extension
      * @var Collection $configs
      */
     protected $configs;
+
+    /**
+     * Extension constructor.
+     */
+    public function __construct()
+    {
+        $this->configs = new ArrayCollection();
+    }
 
     /**
      * Get Id
@@ -76,6 +85,36 @@ abstract class Extension
     }
 
     /**
+     * Add configs
+     *
+     * @param Config $config
+     *
+     * @return Extension
+     */
+    public function addConfig(Config $config): Extension
+    {
+        $config->setExtension($this);
+
+        $this->configs[] = $config;
+
+        return $this;
+    }
+
+    /**
+     * Remove configs
+     *
+     * @param Config $configs
+     *
+     * @return Extension
+     */
+    public function removeConfig(Config $configs): Extension
+    {
+        $this->configs->removeElement($configs);
+
+        return $this;
+    }
+
+    /**
      * Get Configs
      *
      * @return Collection
@@ -97,5 +136,23 @@ abstract class Extension
         $this->configs = $configs;
 
         return $this;
+    }
+
+    /**
+     * Get root configs
+     *
+     * @return ArrayCollection
+     */
+    public function getRootConfigs(): ArrayCollection
+    {
+        $configs = new ArrayCollection();
+
+        foreach ($this->configs as $config) {
+            if (false == $config->getParent()) {
+                $configs[] = $config;
+            }
+        }
+
+        return $configs;
     }
 }
