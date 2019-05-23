@@ -25,7 +25,13 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('theme_default')->defaultNull()->end()
+                ->scalarNode('theme_default')
+                    ->defaultNull()
+                ->end()
+                ->arrayNode('theme_settings')
+                    ->treatNullLike([])
+                    ->prototype('scalar')->end()
+                ->end()
             ->end()
         ;
 

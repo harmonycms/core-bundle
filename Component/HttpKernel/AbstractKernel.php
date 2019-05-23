@@ -2,7 +2,11 @@
 
 namespace Harmony\Bundle\CoreBundle\Component\HttpKernel;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
 use Harmony\Bundle\CoreBundle\HarmonyCoreBundle;
+use Harmony\Bundle\CoreBundle\Provider\ContainerBuilderOdm;
+use Harmony\Bundle\CoreBundle\Provider\ContainerBuilderOrm;
 use Harmony\Sdk\Extension\AbstractExtension;
 use Harmony\Sdk\Extension\BootableInterface;
 use Harmony\Sdk\Extension\BuildableInterface;
@@ -13,13 +17,19 @@ use Harmony\Sdk\Theme\Theme;
 use Harmony\Sdk\Theme\ThemeInterface;
 use InvalidArgumentException;
 use LogicException;
+use ProxyManager\Configuration;
 use RuntimeException;
+use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\TaggedContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use function array_merge;
+use function class_exists;
 use function count;
 use function explode;
 use function file_exists;
@@ -327,6 +337,39 @@ abstract class AbstractKernel extends BaseKernel
 
             $this->extensions[$name] = $extension;
         }
+    }
+
+    /**
+     * Gets a new ContainerBuilder instance used to build the service container.
+     *
+     * @return TaggedContainerInterface
+     */
+    protected function getContainerBuilder(): TaggedContainerInterface
+    {
+        $getContainer = function (ContainerBuilder $container) {
+            $container->getParameterBag()->add($this->getKernelParameters());
+            if ($this instanceof CompilerPassInterface) {
+                $container->addCompilerPass($this, PassConfig::TYPE_BEFORE_OPTIMIZATION, - 10000);
+            }
+            if (class_exists(Configuration::class) && class_exists(RuntimeInstantiator::class)) {
+                $container->setProxyInstantiator(new RuntimeInstantiator());
+            }
+
+            return $container;
+        };
+
+        $bundles = $this->getBundles();
+        if (class_exists(DoctrineOrmMappingsPass::class) && isset($bundles['DoctrineBundle'])) {
+            $container = new ContainerBuilderOrm();
+
+            return $getContainer($container);
+        } elseif (class_exists(DoctrineMongoDBMappingsPass::class) && isset($bundles['DoctrineMongoDBBundle'])) {
+            $container = new ContainerBuilderOdm();
+
+            return $getContainer($container);
+        }
+
+        return parent::getContainerBuilder();
     }
 
     /**
