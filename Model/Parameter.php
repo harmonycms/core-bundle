@@ -7,7 +7,7 @@ namespace Harmony\Bundle\CoreBundle\Model;
  *
  * @package Harmony\Bundle\CoreBundle\Model
  */
-abstract class Parameter
+abstract class Parameter implements ParameterInterface
 {
 
     /**
