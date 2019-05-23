@@ -3,6 +3,8 @@
 namespace Harmony\Bundle\CoreBundle\Provider;
 
 use Doctrine\MongoDB\Connection;
+use Harmony\Bundle\CoreBundle\Model\Config;
+use Harmony\Bundle\CoreBundle\Model\Extension;
 use MongoCollection;
 use function array_merge_recursive;
 use function array_shift;
@@ -87,6 +89,54 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
         if (false === $this->checkCollectionExist('ContainerConfig')) {
             return;
         }
+
+        $currentExtension = null;
+        $extensions       = [];
+        $configs          = [];
+
+        $cursor = $this->databaseConnection->selectCollection($this->defaultDatabase, 'ContainerConfig')->find();
+        foreach ($cursor as $result) {
+
+            if ($currentExtension != $result['extension']) {
+                // The current extension has changed. We have to create a new Extension
+                $currentExtension = $result['extension'];
+                $extension        = new Extension();
+                $extension->setName($result['name']);
+                $extensions[$currentExtension] = $extension;
+            }
+
+            // New Config object
+            $config = new Config();
+            $config->setName($result['name']);
+            $config->setValue($result['value']);
+
+            if (isset($result['parent'])) {
+                // The current config has a parent. We set the parent and the child
+                $parentConfig = $configs[$result['parent']];
+                $parentConfig->addChildren($config);
+                $config->setParent($parentConfig);
+            } else {
+                // The current config has no parent so we link it to the extension.
+                // (We should always link the config to an extension even if it has a parent but it makes it easier to build the config tree that way)
+                $config->setExtension($extensions[$currentExtension]);
+                $extensions[$currentExtension]->addConfig($config);
+            }
+
+            // Store the new config in the configs array to keep it for further use if it has children
+            $configs[(string)$result['_id']] = $config;
+        }
+
+        foreach ($extensions as $extension) {
+            $values = [];
+
+            // Loop through configs without parent to get their config trees
+            foreach ($extension->getConfigs() as $config) {
+                $values[$config->getName()] = $config->getConfigTree();
+            }
+
+            // Adds the new config loaded from the database to the config of the extension
+            $this->loadFromExtension($extension->getName(), $values);
+        }
     }
 
     /**
@@ -112,8 +162,10 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
     {
         $arrayCollectionNames = [];
         /** @var MongoCollection $collection */
-        foreach ($this->databaseConnection->selectDatabase($this->defaultDatabase)->listCollections() as $collection) {
-            $arrayCollectionNames[] = $collection->getCollection()->getCollectionName();
+        foreach ($this->databaseConnection->selectDatabase($this->defaultDatabase)
+                     ->listCollections() as $collection) {
+            $arrayCollectionNames[] = $collection->getCollection()
+                ->getCollectionName();
         }
 
         return in_array($collectionName, $arrayCollectionNames);
