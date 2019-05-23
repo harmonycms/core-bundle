@@ -6,6 +6,7 @@ use Doctrine\MongoDB\Connection;
 use Harmony\Bundle\CoreBundle\Model\Config;
 use Harmony\Bundle\CoreBundle\Model\Extension;
 use MongoCollection;
+use MongoId;
 use function array_merge_recursive;
 use function array_shift;
 use function in_array;
@@ -83,6 +84,7 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
      * Adds configs from the database to the current configs
      *
      * @return void
+     * @throws \MongoException
      */
     protected function addDbConfig(): void
     {
@@ -97,11 +99,21 @@ class ContainerBuilderOdm extends AbstractContainerBuilder
         $cursor = $this->databaseConnection->selectCollection($this->defaultDatabase, 'ContainerConfig')->find();
         foreach ($cursor as $result) {
 
-            if ($currentExtension != $result['extension']) {
+            $extension     = $this->databaseConnection->selectCollection($this->defaultDatabase, 'ContainerExtension')
+                ->createQueryBuilder()
+                ->limit(1)
+                ->field('_id')
+                ->equals(new MongoId($result['extension']))
+                ->getQuery()
+                ->execute()
+                ->toArray();
+            $extensionName = isset($extension[$result['extension']]) ? $extension[$result['extension']]['name'] : null;
+
+            if ($currentExtension != $result['extension'] && null !== $extensionName) {
                 // The current extension has changed. We have to create a new Extension
                 $currentExtension = $result['extension'];
                 $extension        = new Extension();
-                $extension->setName($result['name']);
+                $extension->setName($extensionName);
                 $extensions[$currentExtension] = $extension;
             }
 
