@@ -178,9 +178,9 @@ class Config implements ConfigInterface
     /**
      * Get Parent
      *
-     * @return Config
+     * @return null|Config
      */
-    public function getParent(): Config
+    public function getParent(): ?Config
     {
         return $this->parent;
     }
